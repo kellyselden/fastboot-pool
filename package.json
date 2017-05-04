@@ -1,0 +1,51 @@
+{
+  "name": "fastboot-pool",
+  "version": "0.0.0",
+  "description": "Manage Ember FastBoot memory usage using process pools",
+  "main": "dist/index.js",
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "babel lib -d dist",
+    "prepublish": "npm run build",
+    "test": "eslint-mocha --eslint-args=\"lib test\" --mocha-args=\"--compilers js:babel-register test/**/*-test.js\"",
+    "prelint": "eslint --version",
+    "lint": "eslint lib test",
+    "lint:fix": "npm run lint -- --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kellyselden/fastboot-pool.git"
+  },
+  "keywords": [
+    "fork",
+    "process",
+    "pool",
+    "ember",
+    "fastboot"
+  ],
+  "author": "Kelly Selden",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kellyselden/fastboot-pool/issues"
+  },
+  "homepage": "https://github.com/kellyselden/fastboot-pool#readme",
+  "engines": {
+    "node": ">= 4"
+  },
+  "dependencies": {
+    "json-stringify-safe": "^5.0.1",
+    "node-debug-helper": "^0.1.2",
+    "uuid": "^3.0.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-env": "^1.4.0",
+    "babel-register": "^6.24.1",
+    "chai": "^3.5.0",
+    "eslint": "^3.19.0",
+    "eslint-config-sane": "^0.1.0",
+    "eslint-mocha": "^0.2.2",
+    "mocha": "^3.3.0",
+    "rimraf": "^2.6.1"
+  }
+}
