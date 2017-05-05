@@ -7,9 +7,9 @@
     "prebuild": "rimraf dist",
     "build": "babel lib -d dist",
     "prepublish": "npm run build",
-    "test": "eslint-mocha --eslint-args=\"lib test\" --mocha-args=\"--compilers js:babel-register test/**/*-test.js\"",
+    "test": "eslint-mocha --eslint-args=\"lib test/!(fixtures)/**/*-test.js\" --mocha-args=\"--compilers js:babel-register test/!(fixtures)/**/*-test.js\"",
     "prelint": "eslint --version",
-    "lint": "eslint lib test",
+    "lint": "eslint lib test/!(fixtures)/**/*-test.js",
     "lint:fix": "npm run lint -- --fix"
   },
   "repository": {
