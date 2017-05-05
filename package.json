@@ -7,6 +7,7 @@
     "prebuild": "rimraf dist",
     "build": "babel lib -d dist",
     "prepublish": "npm run build",
+    "pretest": "npm run build",
     "test": "eslint-mocha --eslint-args=\"lib test/!(fixtures)/**/*-test.js\" --mocha-args=\"--compilers js:babel-register test/!(fixtures)/**/*-test.js\"",
     "prelint": "eslint --version",
     "lint": "eslint lib test/!(fixtures)/**/*-test.js",
@@ -44,10 +45,14 @@
     "babel-preset-env": "^1.4.0",
     "babel-register": "^6.24.1",
     "chai": "^3.5.0",
+    "ember-cli": "^2.13.1",
     "eslint": "^3.19.0",
     "eslint-config-sane": "^0.1.0",
     "eslint-mocha": "^0.2.2",
+    "express-generator": "^4.15.0",
+    "fs-extra": "^3.0.1",
     "mocha": "^3.3.0",
+    "request": "^2.81.0",
     "rimraf": "^2.6.1"
   }
 }
