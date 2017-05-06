@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { exec, execSync } from 'child_process';
+import { spawn, execSync } from 'child_process';
 import {
   ensureDirSync,
   copySync,
@@ -162,21 +162,28 @@ describe('Acceptance', function() {
   before(function() {
     this.timeout(10 * 60 * 1000);
 
-    init(false, false);
+    init(true, false);
 
     cwd = process.cwd();
     process.chdir('tmp/express');
   });
 
   beforeEach(function() {
-    debug('express: npm start');
-    server = exec('npm start', {
+    server = spawn('node', ['bin/www'], {
       env: Object.assign({
         DEBUG: 'fastboot-pool'
       }, process.env)
     });
 
     server.stderr.pipe(process.stderr);
+  });
+
+  afterEach(function(done) {
+    server.on('exit', () => {
+      server = null;
+      done();
+    });
+    server.kill('SIGINT');
   });
 
   after(function() {
@@ -187,22 +194,34 @@ describe('Acceptance', function() {
     this.timeout(60 * 1000);
 
     let wasSent;
-    let count = 0;
     let expected = 20;
+    let forks = {};
     server.stderr.on('data', data => {
       data = data.toString();
 
-      if (!wasSent && data.indexOf('iswaiting') !== -1) {
-        for (let i = 0; i < expected; i++) {
-          request('http://localhost:3000');
-        }
-        wasSent = true;
-      }
+      let parts = data.split(' ');
+      parts.forEach((part, i) => {
+        if (part.indexOf('iswaiting') === 0) {
+          let fork = parts[i - 1];
+          forks[fork] = 0;
 
-      count += data.split(' ').filter(x => x === 'wasrendered').length;
+          if (!wasSent) {
+            for (let i = 0; i < expected; i++) {
+              request('http://localhost:3000');
+            }
+            wasSent = true;
+          }
+        }
+        if (part === 'wasrendered') {
+          let fork = parts[i - 1];
+          forks[fork]++;
+        }
+      });
 
       if (data.indexOf('currentcount 0') !== -1) {
-        server.kill();
+        let count = Object.keys(forks).reduce((count, fork) => {
+          return count + forks[fork];
+        }, 0);
 
         expect(count).to.equal(expected);
 
