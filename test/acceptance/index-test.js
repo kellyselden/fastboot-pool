@@ -187,18 +187,24 @@ describe('Acceptance', function() {
     this.timeout(60 * 1000);
 
     let wasSent;
+    let count = 0;
+    let expected = 20;
     server.stderr.on('data', data => {
       data = data.toString();
+
       if (!wasSent && data.indexOf('iswaiting') !== -1) {
-        for (let i = 0; i < 20; i++) {
+        for (let i = 0; i < expected; i++) {
           request('http://localhost:3000');
         }
         wasSent = true;
       }
+
+      count += data.split(' ').filter(x => x === 'wasrendered').length;
+
       if (data.indexOf('currentcount 0') !== -1) {
         server.kill();
 
-        expect(true).to.be.true;
+        expect(count).to.equal(expected);
 
         done();
       }
