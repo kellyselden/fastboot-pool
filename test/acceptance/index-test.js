@@ -18,6 +18,8 @@ import _debug from 'debug';
 const request = denodeify(_request);
 const debug = _debug('fastboot-pool');
 
+const requestCountUntilFork = 5;
+
 function init(earlyReturn, saveModules) {
   if (!earlyReturn && !saveModules) {
     debug('empty tmp');
@@ -158,6 +160,8 @@ function initExpress(earlyReturn, saveModules) {
 }
 
 describe('Acceptance', function() {
+  this.timeout(60 * 1000);
+
   let cwd;
   let server;
 
@@ -192,15 +196,36 @@ describe('Acceptance', function() {
     process.chdir(cwd);
   });
 
-  it('test', function() {
-    this.timeout(60 * 1000);
-
+  it('request count divisible by `requestCountUntilFork`', function() {
     let wasSent;
-    let expected = 20;
+    let expectedRequests = 20;
     let forks = {};
     let requests = [];
+    let isQueueFlushed;
+
+    let expectedForks = Math.floor(expectedRequests / requestCountUntilFork) + 1;
 
     let countPromise = new Promise(resolve => {
+      function endIfNeeded() {
+        let forkKeys = Object.keys(forks);
+        let forkCount = forkKeys.length;
+        if (forkCount !== expectedForks || !isQueueFlushed) {
+          return;
+        }
+
+        expect(forkCount, 'number of forks').to.equal(expectedForks);
+
+        let count = forkKeys.reduce((count, fork) => {
+          expect(forks[fork], `fork ${fork}`).to.be.lte(requestCountUntilFork);
+
+          return count + forks[fork];
+        }, 0);
+
+        expect(count, 'number of responses').to.equal(expectedRequests);
+
+        resolve();
+      }
+
       server.stderr.on('data', data => {
         data = data.toString();
 
@@ -211,7 +236,7 @@ describe('Acceptance', function() {
             forks[fork] = 0;
 
             if (!wasSent) {
-              for (let i = 0; i < expected; i++) {
+              for (let i = 0; i < expectedRequests; i++) {
                 let promise = request('http://localhost:3000').then(({ body }) => {
                   expect(body).to.contain('Congratulations, you made it!');
                 });
@@ -219,6 +244,8 @@ describe('Acceptance', function() {
               }
               wasSent = true;
             }
+
+            endIfNeeded();
           }
           if (part === 'wasrendered') {
             let fork = parts[i - 1];
@@ -227,13 +254,9 @@ describe('Acceptance', function() {
         });
 
         if (data.indexOf('currentcount 0') !== -1) {
-          let count = Object.keys(forks).reduce((count, fork) => {
-            return count + forks[fork];
-          }, 0);
+          isQueueFlushed = true;
 
-          expect(count).to.equal(expected);
-
-          resolve();
+          endIfNeeded();
         }
       });
     });
