@@ -6,10 +6,10 @@ const app = new FastBoot({
   distPath: '../my-app/dist'
 });
 
-module.exports = function({
-  request,
-  response
-}) {
+module.exports = function(message) {
+  let request = message.request;
+  let response = message.response;
+
   return app.visit(request.url, {
     request,
     response
