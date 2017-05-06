@@ -11,9 +11,11 @@ import {
   existsSync,
   emptyDirSync
 } from 'fs-extra';
-import request from 'request';
+import denodeify from 'denodeify';
+import _request from 'request';
 import _debug from 'debug';
 
+const request = denodeify(_request);
 const debug = _debug('fastboot-pool');
 
 function init(earlyReturn, saveModules) {
@@ -190,43 +192,52 @@ describe('Acceptance', function() {
     process.chdir(cwd);
   });
 
-  it('test', function(done) {
+  it('test', function() {
     this.timeout(60 * 1000);
 
     let wasSent;
     let expected = 20;
     let forks = {};
-    server.stderr.on('data', data => {
-      data = data.toString();
+    let requests = [];
 
-      let parts = data.split(' ');
-      parts.forEach((part, i) => {
-        if (part.indexOf('iswaiting') === 0) {
-          let fork = parts[i - 1];
-          forks[fork] = 0;
+    let countPromise = new Promise(resolve => {
+      server.stderr.on('data', data => {
+        data = data.toString();
 
-          if (!wasSent) {
-            for (let i = 0; i < expected; i++) {
-              request('http://localhost:3000');
+        let parts = data.split(' ');
+        parts.forEach((part, i) => {
+          if (part.indexOf('iswaiting') === 0) {
+            let fork = parts[i - 1];
+            forks[fork] = 0;
+
+            if (!wasSent) {
+              for (let i = 0; i < expected; i++) {
+                let promise = request('http://localhost:3000').then(({ body }) => {
+                  expect(body).to.contain('Congratulations, you made it!');
+                });
+                requests.push(promise);
+              }
+              wasSent = true;
             }
-            wasSent = true;
           }
-        }
-        if (part === 'wasrendered') {
-          let fork = parts[i - 1];
-          forks[fork]++;
+          if (part === 'wasrendered') {
+            let fork = parts[i - 1];
+            forks[fork]++;
+          }
+        });
+
+        if (data.indexOf('currentcount 0') !== -1) {
+          let count = Object.keys(forks).reduce((count, fork) => {
+            return count + forks[fork];
+          }, 0);
+
+          expect(count).to.equal(expected);
+
+          resolve();
         }
       });
-
-      if (data.indexOf('currentcount 0') !== -1) {
-        let count = Object.keys(forks).reduce((count, fork) => {
-          return count + forks[fork];
-        }, 0);
-
-        expect(count).to.equal(expected);
-
-        done();
-      }
     });
+
+    return Promise.all(requests.concat(countPromise));
   });
 });
