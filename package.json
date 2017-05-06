@@ -45,6 +45,7 @@
     "babel-preset-env": "^1.4.0",
     "babel-register": "^6.24.1",
     "chai": "^3.5.0",
+    "denodeify": "^1.2.1",
     "ember-cli": "^2.13.1",
     "eslint": "^3.19.0",
     "eslint-config-sane": "^0.1.0",
