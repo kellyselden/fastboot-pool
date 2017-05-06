@@ -11,14 +11,20 @@ import {
   existsSync,
   emptyDirSync
 } from 'fs-extra';
-import denodeify from 'denodeify';
-import _request from 'request';
+import request from 'request';
 import _debug from 'debug';
 
-const request = denodeify(_request);
 const debug = _debug('fastboot-pool');
 
 const requestCountUntilFork = 5;
+
+function getExpectedForkCount(requestCount) {
+  return Math.max(Math.ceil(requestCount / requestCountUntilFork) + 1, 2);
+}
+
+function getExpectedForkKills(requestCount) {
+  return Math.max(Math.ceil(requestCount / requestCountUntilFork) - 1, 0);
+}
 
 function init(earlyReturn, saveModules) {
   if (!earlyReturn && !saveModules) {
@@ -196,71 +202,102 @@ describe('Acceptance', function() {
     process.chdir(cwd);
   });
 
-  it('request count divisible by `requestCountUntilFork`', function() {
-    let wasSent;
-    let expectedRequests = 20;
+  function sendRequests(requestCount) {
+    let wereRequestsSent;
     let forks = {};
-    let requests = [];
-    let isQueueFlushed;
+    let responseCount = 0;
 
-    let expectedForks = Math.floor(expectedRequests / requestCountUntilFork) + 1;
+    let expectedForkCount = getExpectedForkCount(requestCount);
+    let expectedForkKills = getExpectedForkKills(requestCount);
 
-    let countPromise = new Promise(resolve => {
+    return new Promise(resolve => {
       function endIfNeeded() {
         let forkKeys = Object.keys(forks);
+
         let forkCount = forkKeys.length;
-        if (forkCount !== expectedForks || !isQueueFlushed) {
+
+        let forkKills = forkKeys.filter(fork => forks[fork].wasKilled).length;
+
+        let renderCount = forkKeys.reduce((count, fork) => {
+          let { renderCount } = forks[fork];
+
+          expect(renderCount, `fork ${fork}`).to.be.lte(requestCountUntilFork);
+
+          return count + renderCount;
+        }, 0);
+
+        let isFinished =
+          forkCount === expectedForkCount &&
+          forkKills === expectedForkKills &&
+          renderCount === requestCount &&
+          responseCount === requestCount;
+
+        if (!isFinished) {
           return;
         }
 
-        expect(forkCount, 'number of forks').to.equal(expectedForks);
+        expect(forkCount, 'number of forks').to.equal(expectedForkCount);
 
-        let count = forkKeys.reduce((count, fork) => {
-          expect(forks[fork], `fork ${fork}`).to.be.lte(requestCountUntilFork);
+        expect(renderCount, 'number of renders').to.equal(requestCount);
 
-          return count + forks[fork];
-        }, 0);
-
-        expect(count, 'number of responses').to.equal(expectedRequests);
+        expect(responseCount, 'number of responses').to.equal(requestCount);
 
         resolve();
       }
 
       server.stderr.on('data', data => {
-        data = data.toString();
+        let output = data.toString();
 
-        let parts = data.split(' ');
+        let parts = output.split(' ');
         parts.forEach((part, i) => {
           if (part.indexOf('iswaiting') === 0) {
             let fork = parts[i - 1];
-            forks[fork] = 0;
+            forks[fork] = {
+              renderCount: 0,
+              wasKilled: false
+            };
 
-            if (!wasSent) {
-              for (let i = 0; i < expectedRequests; i++) {
-                let promise = request('http://localhost:3000').then(({ body }) => {
-                  expect(body).to.contain('Congratulations, you made it!');
+            if (!wereRequestsSent) {
+              for (let i = 1; i <= requestCount; i++) {
+                request('http://localhost:3000', (error, response, body) => {
+                  expect(body, `request ${i}`).to.contain('Congratulations, you made it!');
+
+                  responseCount++;
+
+                  endIfNeeded();
                 });
-                requests.push(promise);
               }
-              wasSent = true;
+              wereRequestsSent = true;
             }
 
             endIfNeeded();
           }
           if (part === 'wasrendered') {
             let fork = parts[i - 1];
-            forks[fork]++;
+            forks[fork].renderCount++;
+
+            endIfNeeded();
+          }
+          if (part.indexOf('waskilled') === 0) {
+            let fork = parts[i - 1];
+            forks[fork].wasKilled = true;
+
+            endIfNeeded();
           }
         });
-
-        if (data.indexOf('currentcount 0') !== -1) {
-          isQueueFlushed = true;
-
-          endIfNeeded();
-        }
       });
     });
+  }
 
-    return Promise.all(requests.concat(countPromise));
+  it('forks twice for zero requests', function() {
+    return sendRequests(0);
+  });
+
+  it('request count divisible by `requestCountUntilFork`', function() {
+    return sendRequests(10);
+  });
+
+  it('request count not divisible by `requestCountUntilFork`', function() {
+    return sendRequests(23);
   });
 });
