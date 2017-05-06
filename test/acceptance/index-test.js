@@ -155,51 +155,53 @@ function initExpress(earlyReturn, saveModules) {
   });
 }
 
-describe('test', function() {
-  it('test', function(done) {
-    this.timeout(15 * 60 * 1000);
+describe('Acceptance', function() {
+  let cwd;
+  let server;
+
+  before(function() {
+    this.timeout(10 * 60 * 1000);
 
     init(false, false);
 
-    let cwd = process.cwd();
+    cwd = process.cwd();
     process.chdir('tmp/express');
+  });
 
+  beforeEach(function() {
     debug('express: npm start');
-    let p = exec('npm start', {
+    server = exec('npm start', {
       env: Object.assign({
         DEBUG: 'fastboot-pool'
       }, process.env)
     });
 
+    server.stderr.pipe(process.stderr);
+  });
+
+  after(function() {
+    process.chdir(cwd);
+  });
+
+  it('test', function(done) {
+    this.timeout(60 * 1000);
+
     let wasSent;
-    p.stderr.on('data', function(data) {
-      debug('stderr: ', data.toString());
-      if (!wasSent && data.toString().indexOf('iswaiting') !== -1) {
+    server.stderr.on('data', data => {
+      data = data.toString();
+      if (!wasSent && data.indexOf('iswaiting') !== -1) {
         for (let i = 0; i < 20; i++) {
           request('http://localhost:3000');
         }
         wasSent = true;
       }
-      if (data.toString().indexOf('currentcount 0') !== -1) {
-        p.kill();
-
-        process.chdir(cwd);
+      if (data.indexOf('currentcount 0') !== -1) {
+        server.kill();
 
         expect(true).to.be.true;
 
         done();
       }
-    });
-    p.stdout.on('data', function(data) {
-      debug('stdout: ', data.toString());
-    });
-
-    p.on('error', function(code, signal) {
-      debug(`error code ${code} signal ${signal}`);
-    });
-
-    p.on('exit', function(code, signal) {
-      debug(`exit code ${code} signal ${signal}`);
     });
   });
 });
