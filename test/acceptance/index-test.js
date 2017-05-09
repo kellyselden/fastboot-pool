@@ -119,7 +119,7 @@ function initExpress(earlyReturn, saveModules) {
     });
 
     moveSync('tmp/node_modules', 'tmp/express/node_modules');
-    if (existsSync('tmp//yarn.lock')) {
+    if (existsSync('tmp/yarn.lock')) {
       moveSync('tmp/yarn.lock', 'tmp/express/yarn.lock');
     }
 
