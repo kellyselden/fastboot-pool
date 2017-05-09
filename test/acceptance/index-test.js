@@ -61,7 +61,7 @@ function initMyApp(earlyReturn, saveModules) {
     });
 
     moveSync('tmp/node_modules', 'tmp/my-app/node_modules');
-    if (existsSync('tmp//yarn.lock')) {
+    if (existsSync('tmp/yarn.lock')) {
       moveSync('tmp/yarn.lock', 'tmp/my-app/yarn.lock');
     }
 
