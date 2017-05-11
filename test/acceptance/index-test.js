@@ -18,6 +18,9 @@ const debug = _debug('fastboot-pool');
 
 const requestCountUntilFork = 5;
 
+let cwd;
+let server;
+
 function getExpectedForkCount(requestCount) {
   return Math.max(Math.ceil(requestCount / requestCountUntilFork) + 1, 2);
 }
@@ -165,118 +168,147 @@ function copyFixture(from, to) {
   );
 }
 
-describe('Acceptance', function() {
-  this.timeout(60 * 1000);
+function sendRequests(requestCount, expectedSuccesses, expectedFailures) {
+  let wereRequestsSent;
+  let forks = {};
+  let responseSuccessCount = 0;
+  let responseErrorCount = 0;
 
-  let cwd;
-  let server;
+  let expectedForkCount = getExpectedForkCount(requestCount);
+  let expectedForkKills = getExpectedForkKills(requestCount);
 
-  function sendRequests(requestCount, expectedSuccesses, expectedFailures) {
-    let wereRequestsSent;
-    let forks = {};
-    let responseSuccessCount = 0;
-    let responseErrorCount = 0;
+  return new Promise(resolve => {
+    function endIfNeeded() {
+      let forkKeys = Object.keys(forks);
 
-    let expectedForkCount = getExpectedForkCount(requestCount);
-    let expectedForkKills = getExpectedForkKills(requestCount);
+      let forkCount = forkKeys.length;
 
-    return new Promise(resolve => {
-      function endIfNeeded() {
-        let forkKeys = Object.keys(forks);
+      let forkKills = forkKeys.filter(fork => forks[fork].wasKilled).length;
 
-        let forkCount = forkKeys.length;
+      let totalSuccessCount = 0;
+      let totalFailureCount = 0;
+      for (let fork in forks) {
+        let {
+          successCount,
+          failureCount
+        } = forks[fork];
 
-        let forkKills = forkKeys.filter(fork => forks[fork].wasKilled).length;
+        expect(successCount, `fork ${fork} successes`).to.be.lte(requestCountUntilFork);
+        expect(failureCount, `fork ${fork} failures`).to.be.lte(requestCountUntilFork);
 
-        let totalSuccessCount = 0;
-        let totalFailureCount = 0;
-        for (let fork in forks) {
-          let {
-            successCount,
-            failureCount
-          } = forks[fork];
-
-          expect(successCount, `fork ${fork} successes`).to.be.lte(requestCountUntilFork);
-          expect(failureCount, `fork ${fork} failures`).to.be.lte(requestCountUntilFork);
-
-          totalSuccessCount += successCount;
-          totalFailureCount += failureCount;
-        }
-
-        let isFinished =
-          forkCount === expectedForkCount &&
-          forkKills === expectedForkKills &&
-          totalSuccessCount + totalFailureCount === expectedSuccesses + expectedFailures &&
-          responseSuccessCount + responseErrorCount === expectedSuccesses + expectedFailures;
-
-        if (!isFinished) {
-          return;
-        }
-
-        expect(totalSuccessCount, 'number of successful renders').to.equal(expectedSuccesses);
-        expect(totalFailureCount, 'number of failed renders').to.equal(expectedFailures);
-        expect(responseSuccessCount, 'number of successful responses').to.equal(expectedSuccesses);
-        expect(responseErrorCount, 'number of error responses').to.equal(expectedFailures);
-
-        resolve();
+        totalSuccessCount += successCount;
+        totalFailureCount += failureCount;
       }
 
-      server.stderr.on('data', data => {
-        let output = data.toString();
+      let isFinished =
+        forkCount === expectedForkCount &&
+        forkKills === expectedForkKills &&
+        totalSuccessCount + totalFailureCount === expectedSuccesses + expectedFailures &&
+        responseSuccessCount + responseErrorCount === expectedSuccesses + expectedFailures;
 
-        let parts = output.split(' ');
-        parts.forEach((part, i) => {
-          if (part.indexOf('iswaiting') === 0) {
-            let fork = parts[i - 1];
-            forks[fork] = {
-              successCount: 0,
-              failureCount: 0,
-              wasKilled: false
-            };
+      if (!isFinished) {
+        return;
+      }
 
-            if (!wereRequestsSent) {
-              for (let i = 1; i <= requestCount; i++) {
-                request('http://localhost:3000', (error, response, body) => {
-                  if (response.statusCode === 500) {
-                    expect(body, `request ${i}`).to.contain('Congratulations, you didn\'t make it!');
+      expect(totalSuccessCount, 'number of successful renders').to.equal(expectedSuccesses);
+      expect(totalFailureCount, 'number of failed renders').to.equal(expectedFailures);
+      expect(responseSuccessCount, 'number of successful responses').to.equal(expectedSuccesses);
+      expect(responseErrorCount, 'number of error responses').to.equal(expectedFailures);
 
-                    responseErrorCount++;
-                  } else {
-                    expect(body, `request ${i}`).to.contain('Congratulations, you made it!');
+      resolve();
+    }
 
-                    responseSuccessCount++;
-                  }
+    server.stderr.on('data', data => {
+      let output = data.toString();
 
-                  endIfNeeded();
-                });
-              }
-              wereRequestsSent = true;
+      let parts = output.split(' ');
+      parts.forEach((part, i) => {
+        if (part.indexOf('iswaiting') === 0) {
+          let fork = parts[i - 1];
+          forks[fork] = {
+            successCount: 0,
+            failureCount: 0,
+            wasKilled: false
+          };
+
+          if (!wereRequestsSent) {
+            for (let i = 1; i <= requestCount; i++) {
+              request('http://localhost:3000', (error, response, body) => {
+                if (response.statusCode === 500) {
+                  expect(body, `request ${i}`).to.contain('Congratulations, you didn\'t make it!');
+
+                  responseErrorCount++;
+                } else {
+                  expect(body, `request ${i}`).to.contain('Congratulations, you made it!');
+
+                  responseSuccessCount++;
+                }
+
+                endIfNeeded();
+              });
             }
-
-            endIfNeeded();
+            wereRequestsSent = true;
           }
-          if (part === 'wasrendered') {
-            let fork = parts[i - 1];
-            forks[fork].successCount++;
 
-            endIfNeeded();
-          }
-          if (part === 'didfail') {
-            let fork = parts[i - 1];
-            forks[fork].failureCount++;
+          endIfNeeded();
+        }
+        if (part === 'wasrendered') {
+          let fork = parts[i - 1];
+          forks[fork].successCount++;
 
-            endIfNeeded();
-          }
-          if (part.indexOf('waskilled') === 0) {
-            let fork = parts[i - 1];
-            forks[fork].wasKilled = true;
+          endIfNeeded();
+        }
+        if (part === 'didfail') {
+          let fork = parts[i - 1];
+          forks[fork].failureCount++;
 
-            endIfNeeded();
-          }
-        });
+          endIfNeeded();
+        }
+        if (part.indexOf('waskilled') === 0) {
+          let fork = parts[i - 1];
+          forks[fork].wasKilled = true;
+
+          endIfNeeded();
+        }
       });
     });
-  }
+  });
+}
+
+function copyFixtures(fastbootFile) {
+  copyFixture('index.js', 'index.js');
+  copyFixture(fastbootFile, 'fastboot.js');
+}
+
+function prepServer() {
+  cwd = process.cwd();
+  process.chdir('tmp/express');
+}
+
+function startServer() {
+  server = spawn('node', ['bin/www'], {
+    env: Object.assign({
+      DEBUG: 'fastboot-pool'
+    }, process.env)
+  });
+
+  server.stderr.pipe(process.stderr);
+}
+
+function stopServer(done) {
+  server.on('exit', () => {
+    server = null;
+    done();
+  });
+  server.kill('SIGINT');
+}
+
+function cleanUp() {
+  process.chdir(cwd);
+}
+
+describe('Acceptance', function() {
+  this.timeout(60 * 1000);
 
   function bootstrap(callback) {
     return function() {
@@ -291,36 +323,36 @@ describe('Acceptance', function() {
 
         init(true, false);
 
-        copyFixture('index.js', 'index.js');
-        copyFixture(getFastbootFixtureName(), 'fastboot.js');
+        copyFixtures(getFastbootFixtureName());
 
-        cwd = process.cwd();
-        process.chdir('tmp/express');
+        prepServer();
       });
 
-      beforeEach(function() {
-        server = spawn('node', ['bin/www'], {
-          env: Object.assign({
-            DEBUG: 'fastboot-pool'
-          }, process.env)
-        });
+      beforeEach(startServer);
 
-        server.stderr.pipe(process.stderr);
-      });
+      afterEach(stopServer);
 
-      afterEach(function(done) {
-        server.on('exit', () => {
-          server = null;
-          done();
-        });
-        server.kill('SIGINT');
-      });
-
-      after(function() {
-        process.chdir(cwd);
-      });
+      after(cleanUp);
     };
   }
+
+  describe('init fail', bootstrap(function(getFastbootFixtureName) {
+    getFastbootFixtureName(function() {
+      return 'init-fail.js';
+    });
+
+    it('handles a failed fastboot init', function(done) {
+      server.stderr.on('data', data => {
+        let output = data.toString();
+
+        expect(output).to.not.contain('UnhandledPromiseRejectionWarning');
+      });
+
+      // I can't figure out another way to wait for UnhandledPromiseRejectionWarning
+      // since it is the very last thing printed, there's nothing after it to tst for.
+      setTimeout(done, 1000);
+    });
+  }));
 
   describe('success', bootstrap(function(getFastbootFixtureName) {
     getFastbootFixtureName(function() {

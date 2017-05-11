@@ -8,7 +8,7 @@ const init = require('fastboot-pool').default;
 let initPromise = init({
   fastbootFilename: `${__dirname}/fastboot`,
   requestCountUntilFork: 5
-});
+}).catch(() => {});
 
 router.get('/', (req, res, next) => {
   return initPromise.then(render => {
