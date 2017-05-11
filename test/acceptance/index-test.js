@@ -155,14 +155,14 @@ function initExpress(earlyReturn, saveModules) {
       cwd: 'tmp/express'
     });
   }
+}
 
-  ['index.js', 'fastboot.js'].forEach(file => {
-    copySync(
-      `test/fixtures/${file}`,
-      `tmp/express/routes/${file}`,
-      { overwrite: true }
-    );
-  });
+function copyFixture(from, to) {
+  copySync(
+    `test/fixtures/${from}`,
+    `tmp/express/routes/${to}`,
+    { overwrite: true }
+  );
 }
 
 describe('Acceptance', function() {
@@ -171,41 +171,11 @@ describe('Acceptance', function() {
   let cwd;
   let server;
 
-  before(function() {
-    this.timeout(10 * 60 * 1000);
-
-    init(true, false);
-
-    cwd = process.cwd();
-    process.chdir('tmp/express');
-  });
-
-  beforeEach(function() {
-    server = spawn('node', ['bin/www'], {
-      env: Object.assign({
-        DEBUG: 'fastboot-pool'
-      }, process.env)
-    });
-
-    server.stderr.pipe(process.stderr);
-  });
-
-  afterEach(function(done) {
-    server.on('exit', () => {
-      server = null;
-      done();
-    });
-    server.kill('SIGINT');
-  });
-
-  after(function() {
-    process.chdir(cwd);
-  });
-
-  function sendRequests(requestCount) {
+  function sendRequests(requestCount, expectedSuccesses, expectedFailures) {
     let wereRequestsSent;
     let forks = {};
-    let responseCount = 0;
+    let responseSuccessCount = 0;
+    let responseErrorCount = 0;
 
     let expectedForkCount = getExpectedForkCount(requestCount);
     let expectedForkKills = getExpectedForkKills(requestCount);
@@ -218,29 +188,35 @@ describe('Acceptance', function() {
 
         let forkKills = forkKeys.filter(fork => forks[fork].wasKilled).length;
 
-        let renderCount = forkKeys.reduce((count, fork) => {
-          let { renderCount } = forks[fork];
+        let totalSuccessCount = 0;
+        let totalFailureCount = 0;
+        for (let fork in forks) {
+          let {
+            successCount,
+            failureCount
+          } = forks[fork];
 
-          expect(renderCount, `fork ${fork}`).to.be.lte(requestCountUntilFork);
+          expect(successCount, `fork ${fork} successes`).to.be.lte(requestCountUntilFork);
+          expect(failureCount, `fork ${fork} failures`).to.be.lte(requestCountUntilFork);
 
-          return count + renderCount;
-        }, 0);
+          totalSuccessCount += successCount;
+          totalFailureCount += failureCount;
+        }
 
         let isFinished =
           forkCount === expectedForkCount &&
           forkKills === expectedForkKills &&
-          renderCount === requestCount &&
-          responseCount === requestCount;
+          totalSuccessCount + totalFailureCount === expectedSuccesses + expectedFailures &&
+          responseSuccessCount + responseErrorCount === expectedSuccesses + expectedFailures;
 
         if (!isFinished) {
           return;
         }
 
-        expect(forkCount, 'number of forks').to.equal(expectedForkCount);
-
-        expect(renderCount, 'number of renders').to.equal(requestCount);
-
-        expect(responseCount, 'number of responses').to.equal(requestCount);
+        expect(totalSuccessCount, 'number of successful renders').to.equal(expectedSuccesses);
+        expect(totalFailureCount, 'number of failed renders').to.equal(expectedFailures);
+        expect(responseSuccessCount, 'number of successful responses').to.equal(expectedSuccesses);
+        expect(responseErrorCount, 'number of error responses').to.equal(expectedFailures);
 
         resolve();
       }
@@ -253,16 +229,23 @@ describe('Acceptance', function() {
           if (part.indexOf('iswaiting') === 0) {
             let fork = parts[i - 1];
             forks[fork] = {
-              renderCount: 0,
+              successCount: 0,
+              failureCount: 0,
               wasKilled: false
             };
 
             if (!wereRequestsSent) {
               for (let i = 1; i <= requestCount; i++) {
                 request('http://localhost:3000', (error, response, body) => {
-                  expect(body, `request ${i}`).to.contain('Congratulations, you made it!');
+                  if (response.statusCode === 500) {
+                    expect(body, `request ${i}`).to.contain('Congratulations, you didn\'t make it!');
 
-                  responseCount++;
+                    responseErrorCount++;
+                  } else {
+                    expect(body, `request ${i}`).to.contain('Congratulations, you made it!');
+
+                    responseSuccessCount++;
+                  }
 
                   endIfNeeded();
                 });
@@ -274,7 +257,13 @@ describe('Acceptance', function() {
           }
           if (part === 'wasrendered') {
             let fork = parts[i - 1];
-            forks[fork].renderCount++;
+            forks[fork].successCount++;
+
+            endIfNeeded();
+          }
+          if (part === 'didfail') {
+            let fork = parts[i - 1];
+            forks[fork].failureCount++;
 
             endIfNeeded();
           }
@@ -289,15 +278,85 @@ describe('Acceptance', function() {
     });
   }
 
-  it('forks twice for zero requests', function() {
-    return sendRequests(0);
-  });
+  function bootstrap(callback) {
+    return function() {
+      let getFastbootFixtureName;
 
-  it('request count divisible by `requestCountUntilFork`', function() {
-    return sendRequests(10);
-  });
+      callback.call(this, function(_getFastbootFixtureName) {
+        getFastbootFixtureName = _getFastbootFixtureName;
+      });
 
-  it('request count not divisible by `requestCountUntilFork`', function() {
-    return sendRequests(23);
-  });
+      before(function() {
+        this.timeout(10 * 60 * 1000);
+
+        init(true, false);
+
+        copyFixture('index.js', 'index.js');
+        copyFixture(getFastbootFixtureName(), 'fastboot.js');
+
+        cwd = process.cwd();
+        process.chdir('tmp/express');
+      });
+
+      beforeEach(function() {
+        server = spawn('node', ['bin/www'], {
+          env: Object.assign({
+            DEBUG: 'fastboot-pool'
+          }, process.env)
+        });
+
+        server.stderr.pipe(process.stderr);
+      });
+
+      afterEach(function(done) {
+        server.on('exit', () => {
+          server = null;
+          done();
+        });
+        server.kill('SIGINT');
+      });
+
+      after(function() {
+        process.chdir(cwd);
+      });
+    };
+  }
+
+  describe('success', bootstrap(function(getFastbootFixtureName) {
+    getFastbootFixtureName(function() {
+      return 'success.js';
+    });
+
+    it('forks twice for zero requests', function() {
+      return sendRequests(0, 0, 0);
+    });
+
+    it('request count divisible by `requestCountUntilFork`', function() {
+      return sendRequests(10, 10, 0);
+    });
+
+    it('request count not divisible by `requestCountUntilFork`', function() {
+      return sendRequests(23, 23, 0);
+    });
+  }));
+
+  describe('fail', bootstrap(function(getFastbootFixtureName) {
+    getFastbootFixtureName(function() {
+      return 'fail.js';
+    });
+
+    it('handles the error case', function() {
+      return sendRequests(17, 0, 17);
+    });
+  }));
+
+  describe('both', bootstrap(function(getFastbootFixtureName) {
+    getFastbootFixtureName(function() {
+      return 'both.js';
+    });
+
+    it('handles both successes and failures', function() {
+      return sendRequests(22, 13, 9);
+    });
+  }));
 });

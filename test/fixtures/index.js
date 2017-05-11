@@ -10,14 +10,14 @@ let initPromise = init({
   requestCountUntilFork: 5
 });
 
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
   return initPromise.then(render => {
     return render({
       request: req,
       response: res
     }).then(html => {
       res.send(html);
-    });
+    }).catch(next);
   });
 });
 
