@@ -16,6 +16,3 @@ before_install:
 
 install:
   - yarn install --no-lockfile
-
-script:
-  - DEBUG=fastboot-pool npm test
