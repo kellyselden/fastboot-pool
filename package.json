@@ -8,7 +8,7 @@
     "build": "babel lib -d dist",
     "prepublish": "npm run build",
     "pretest": "npm run build",
-    "test": "eslint-mocha --eslint-args=\"lib test/!(fixtures)/**/*-test.js\" --mocha-args=\"--compilers js:babel-register test/!(fixtures)/**/*-test.js\"",
+    "test": "cross-env DEBUG=fastboot-pool eslint-mocha --eslint-args=\"lib test/!(fixtures)/**/*-test.js\" --mocha-args=\"--compilers js:babel-register test/!(fixtures)/**/*-test.js\"",
     "prelint": "eslint --version",
     "lint": "eslint lib test/!(fixtures)/**/*-test.js",
     "lint:fix": "npm run lint -- --fix"
@@ -45,6 +45,7 @@
     "babel-preset-env": "^1.4.0",
     "babel-register": "^6.24.1",
     "chai": "^3.5.0",
+    "cross-env": "^5.0.0",
     "ember-cli": "^2.13.1",
     "eslint": "^3.19.0",
     "eslint-config-sane": "^0.1.0",
