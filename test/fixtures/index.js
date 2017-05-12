@@ -13,10 +13,11 @@ let initPromise = init({
 router.get('/', (req, res, next) => {
   return initPromise.then(render => {
     return render({
+      // these test circular JSON
       request: req,
       response: res
-    }).then(html => {
-      res.send(html);
+    }).then((result) => {
+      res.send(result.html);
     }).catch(next);
   });
 });

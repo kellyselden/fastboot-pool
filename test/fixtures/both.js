@@ -21,5 +21,5 @@ module.exports = function(message) {
     response
   }).then(result => {
     return result.html();
-  });
+  }).then(html => ({ html }));
 };

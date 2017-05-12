@@ -15,5 +15,12 @@ module.exports = function(message) {
     response
   }).then(result => {
     return result.html();
+  }).then(html => {
+    let circular = {};
+    circular.circular = circular;
+    return {
+      circular,
+      html
+    };
   });
 };
