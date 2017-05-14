@@ -6,12 +6,12 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "babel lib -d dist",
-    "prepublish": "npm run build",
-    "pretest": "npm run build",
+    "prepublish": "yarn run build",
+    "pretest": "yarn run build",
     "test": "cross-env DEBUG=fastboot-pool eslint-mocha --eslint-args=\"lib test/!(fixtures)/**/*-test.js\" --mocha-args=\"--compilers js:babel-register test/!(fixtures)/**/*-test.js\"",
     "prelint": "eslint --version",
     "lint": "eslint lib test/!(fixtures)/**/*-test.js",
-    "lint:fix": "npm run lint -- --fix"
+    "lint:fix": "yarn run lint -- --fix"
   },
   "repository": {
     "type": "git",
