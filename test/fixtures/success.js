@@ -10,6 +10,10 @@ module.exports = function(message) {
   let request = message.request;
   let response = message.response;
 
+  if (!request.protocol) {
+    throw new Error('prototype members missing');
+  }
+
   return app.visit(request.url, {
     request,
     response

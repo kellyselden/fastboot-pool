@@ -34,8 +34,8 @@
     "node": ">= 4"
   },
   "dependencies": {
+    "collapse-prototypes": "^0.2.0",
     "debug": "^2.6.6",
-    "json-stringify-safe": "^5.0.1",
     "node-debug-helper": "^0.1.2",
     "uuid": "^3.0.1",
     "yargs": "^8.0.1"
