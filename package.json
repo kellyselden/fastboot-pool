@@ -10,7 +10,7 @@
     "pretest": "yarn run build",
     "test": "cross-env DEBUG=fastboot-pool eslint-mocha --eslint-args=\"lib test/!(fixtures)/**/*-test.js\" --mocha-args=\"--compilers js:babel-register test/!(fixtures)/**/*-test.js\"",
     "prelint": "eslint --version",
-    "lint": "eslint lib test/!(fixtures)/**/*-test.js",
+    "lint": "eslint lib \"test/!(fixtures)/**/*-test.js\"",
     "lint:fix": "yarn run lint -- --fix"
   },
   "repository": {
