@@ -55,7 +55,17 @@ let initPromise = init({
   fastbootFilename: `${__dirname}/fastboot`,
 
   // choose an appropriate request count when you notice memory getting too high
-  requestCountUntilFork: 5
+  requestCountUntilFork: 5,
+
+  // let fastboot-pool handle serialization for you
+  // It will eliminate circular references (json-stringify-safe)
+  // and collapse prototype properties (collapse-prototypes).
+  // This is useful if you're sending the request object because it has
+  // circular references and prototype members that fastboot uses but doesn't
+  // get handled by the default JSON.stringify. The downside is this is incredibly
+  // slow, so you may be better off doing an optimized serialization yourself.
+  // Default value (false)
+  shouldHandleSerialization: true
 });
 
 router.get('/', (req, res) => {
