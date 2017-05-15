@@ -1,5 +1,6 @@
 'use strict';
 
+const url = require('url');
 const FastBoot = require('fastboot');
 
 const app = new FastBoot({
@@ -8,18 +9,17 @@ const app = new FastBoot({
 
 let count = 0;
 
-module.exports = function(message) {
+module.exports = function(req, res) {
   if (++count % 2 === 0) {
-    return Promise.reject(new Error('Congratulations, you didn\'t make it!'));
+    return res.status(500).send('Congratulations, you failed!');
   }
 
-  let request = message.request;
-  let response = message.response;
-
-  return app.visit(request.url, {
-    request,
-    response
+  app.visit(url.parse(req.url).path, {
+    request: req,
+    response: res
   }).then(result => {
     return result.html();
-  }).then(html => ({ html }));
+  }).then(html => {
+    res.send(html);
+  });
 };

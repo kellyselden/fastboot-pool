@@ -27,7 +27,12 @@ function getExpectedForkCount(requestCount) {
 }
 
 function getExpectedForkKills(requestCount) {
-  return Math.max(Math.ceil(requestCount / requestCountUntilFork) - 1, 0);
+  return Math.max(Math.ceil(requestCount / requestCountUntilFork) - 2, 0);
+}
+
+function run(command, options) {
+  debug(`${options.cwd}: ${command}`);
+  return execSync(command, options);
 }
 
 function init(earlyReturn, saveModules) {
@@ -59,8 +64,7 @@ function initMyApp(earlyReturn, saveModules) {
 
     removeSync('tmp/my-app');
 
-    debug('my-app: ember new my-app -sg -sn');
-    execSync('ember new my-app -sg -sn', {
+    run('ember new my-app -sg -sn', {
       cwd: 'tmp'
     });
 
@@ -75,30 +79,22 @@ function initMyApp(earlyReturn, saveModules) {
 
     writeJsonSync('tmp/my-app/package.json', packageJson);
 
-    debug('my-app: yarn');
-    execSync('yarn', {
+    run('yarn', {
       cwd: 'tmp/my-app'
     });
 
-    // execSync('ember g ember-cli-fastboot', {
+    // run('ember g ember-cli-fastboot', {
     //   cwd: 'tmp/my-app'
     // });
   } else {
-    debug('my-app: ember new my-app -sg --yarn');
-    execSync('ember new my-app -sg --yarn', {
+    run('ember new my-app -sg --yarn', {
       cwd: 'tmp'
     });
 
-    debug('my-app: ember i ember-cli-fastboot');
-    execSync('ember i ember-cli-fastboot', {
+    run('ember i ember-cli-fastboot', {
       cwd: 'tmp/my-app'
     });
   }
-
-  debug('my-app: ember b');
-  execSync('ember b', {
-    cwd: 'tmp/my-app'
-  });
 }
 
 function initExpress(earlyReturn, saveModules) {
@@ -117,8 +113,7 @@ function initExpress(earlyReturn, saveModules) {
 
     removeSync('tmp/express');
 
-    debug('express: express express');
-    execSync('express express', {
+    run('express express', {
       cwd: 'tmp'
     });
 
@@ -136,13 +131,11 @@ function initExpress(earlyReturn, saveModules) {
 
     ensureSymlinkSync(process.cwd(), 'tmp/express/node_modules/fastboot-pool');
 
-    debug('express: yarn');
-    execSync('yarn', {
+    run('yarn', {
       cwd: 'tmp/express'
     });
   } else {
-    debug('express: express express');
-    execSync('express express', {
+    run('express express', {
       cwd: 'tmp'
     });
 
@@ -154,17 +147,16 @@ function initExpress(earlyReturn, saveModules) {
 
     ensureSymlinkSync(process.cwd(), 'tmp/express/node_modules/fastboot-pool');
 
-    debug('express: yarn add fastboot');
-    execSync('yarn add fastboot', {
+    run('yarn add fastboot', {
       cwd: 'tmp/express'
     });
   }
 }
 
 function copyFixture(from, to) {
-  copySync(
+  return copySync(
     `test/fixtures/${from}`,
-    `tmp/express/routes/${to}`,
+    `tmp/${to}`,
     { overwrite: true }
   );
 }
@@ -223,9 +215,9 @@ function sendRequests(requestCount, expectedSuccesses, expectedFailures, sequent
       if (i > requestCount) {
         return;
       }
-      request('http://localhost:3000', (error, response, body) => {
+      request('http://localhost:3000?works=true', (error, response, body) => {
         if (response.statusCode === 500) {
-          expect(body, `request ${i}`).to.contain('Congratulations, you didn\'t make it!');
+          expect(body, `request ${i}`).to.contain('Congratulations, you failed!');
 
           responseErrorCount++;
         } else {
@@ -292,9 +284,21 @@ function sendRequests(requestCount, expectedSuccesses, expectedFailures, sequent
   });
 }
 
-function copyFixtures(fastbootFile) {
-  copyFixture('index.js', 'index.js');
-  copyFixture(fastbootFile, 'fastboot.js');
+function copyFixtures(getFastbootFixtureName, getClientFixtureName) {
+  copyFixture('index.js', 'express/routes/index.js');
+
+  let fastbootFile = getFastbootFixtureName ? getFastbootFixtureName() : 'success.js';
+  copyFixture(fastbootFile, 'express/routes/fastboot.js');
+
+  if (getClientFixtureName) {
+    copyFixture(getClientFixtureName(), 'my-app/app/routes/application.js');
+  } else {
+    removeSync('tmp/my-app/app/routes/application.js');
+
+    run('ember g route application', {
+      cwd: 'tmp/my-app'
+    });
+  }
 }
 
 function prepServer() {
@@ -332,9 +336,15 @@ describe('Acceptance', function() {
   function bootstrap(callback) {
     return function() {
       let getFastbootFixtureName;
+      let getClientFixtureName;
 
-      callback.call(this, function(_getFastbootFixtureName) {
-        getFastbootFixtureName = _getFastbootFixtureName;
+      callback.call(this, {
+        getFastbootFixtureName(_getFastbootFixtureName) {
+          getFastbootFixtureName = _getFastbootFixtureName;
+        },
+        getClientFixtureName(_getClientFixtureName) {
+          getClientFixtureName = _getClientFixtureName;
+        }
       });
 
       before(function() {
@@ -342,7 +352,11 @@ describe('Acceptance', function() {
 
         init(true, false);
 
-        copyFixtures(getFastbootFixtureName());
+        copyFixtures(getFastbootFixtureName, getClientFixtureName);
+
+        run('ember b', {
+          cwd: 'tmp/my-app'
+        });
 
         prepServer();
       });
@@ -355,7 +369,7 @@ describe('Acceptance', function() {
     };
   }
 
-  describe('init fail', bootstrap(function(getFastbootFixtureName) {
+  describe('init fail', bootstrap(function({ getFastbootFixtureName }) {
     getFastbootFixtureName(function() {
       return 'init-fail.js';
     });
@@ -373,11 +387,7 @@ describe('Acceptance', function() {
     });
   }));
 
-  describe('success', bootstrap(function(getFastbootFixtureName) {
-    getFastbootFixtureName(function() {
-      return 'success.js';
-    });
-
+  describe('success', bootstrap(function() {
     it('forks twice for zero requests', function() {
       return sendRequests(0, 0, 0);
     });
@@ -395,7 +405,7 @@ describe('Acceptance', function() {
     });
   }));
 
-  describe('fail', bootstrap(function(getFastbootFixtureName) {
+  describe('fail', bootstrap(function({ getFastbootFixtureName }) {
     getFastbootFixtureName(function() {
       return 'fail.js';
     });
@@ -405,13 +415,23 @@ describe('Acceptance', function() {
     });
   }));
 
-  describe('both', bootstrap(function(getFastbootFixtureName) {
+  describe('both', bootstrap(function({ getFastbootFixtureName }) {
     getFastbootFixtureName(function() {
       return 'both.js';
     });
 
     it('handles both successes and failures', function() {
       return sendRequests(22, 13, 9);
+    });
+  }));
+
+  describe('client error', bootstrap(function({ getClientFixtureName }) {
+    getClientFixtureName(function() {
+      return 'client-error.js';
+    });
+
+    it('handles ember errors', function() {
+      return sendRequests(2, 0, 2);
     });
   }));
 });

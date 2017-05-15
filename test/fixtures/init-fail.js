@@ -1,3 +1,3 @@
 'use strict';
 
-throw new Error('Congratulations, you didn\'t make it!');
+throw new Error('Congratulations, you failed!');
