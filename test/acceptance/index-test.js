@@ -169,7 +169,7 @@ function copyFixture(from, to) {
   );
 }
 
-function sendRequests(requestCount, expectedSuccesses, expectedFailures) {
+function sendRequests(requestCount, expectedSuccesses, expectedFailures, sequential) {
   let wereRequestsSent;
   let forks = {};
   let responseSuccessCount = 0;
@@ -219,6 +219,29 @@ function sendRequests(requestCount, expectedSuccesses, expectedFailures) {
       resolve();
     }
 
+    function _sendRequest(i) {
+      if (i > requestCount) {
+        return;
+      }
+      request('http://localhost:3000', (error, response, body) => {
+        if (response.statusCode === 500) {
+          expect(body, `request ${i}`).to.contain('Congratulations, you didn\'t make it!');
+
+          responseErrorCount++;
+        } else {
+          expect(body, `request ${i}`).to.contain('Congratulations, you made it!');
+
+          responseSuccessCount++;
+        }
+
+        endIfNeeded();
+
+        if (sequential) {
+          _sendRequest(++i);
+        }
+      });
+    }
+
     server.stderr.on('data', data => {
       let output = data.toString();
 
@@ -233,21 +256,14 @@ function sendRequests(requestCount, expectedSuccesses, expectedFailures) {
           };
 
           if (!wereRequestsSent) {
-            for (let i = 1; i <= requestCount; i++) {
-              request('http://localhost:3000', (error, response, body) => {
-                if (response.statusCode === 500) {
-                  expect(body, `request ${i}`).to.contain('Congratulations, you didn\'t make it!');
-
-                  responseErrorCount++;
-                } else {
-                  expect(body, `request ${i}`).to.contain('Congratulations, you made it!');
-
-                  responseSuccessCount++;
-                }
-
-                endIfNeeded();
-              });
+            if (sequential) {
+              _sendRequest(1);
+            } else {
+              for (let i = 1; i <= requestCount; i++) {
+                _sendRequest(i);
+              }
             }
+
             wereRequestsSent = true;
           }
 
@@ -372,6 +388,10 @@ describe('Acceptance', function() {
 
     it('request count not divisible by `requestCountUntilFork`', function() {
       return sendRequests(23, 23, 0);
+    });
+
+    it('handles sequential requests', function() {
+      return sendRequests(12, 12, 0, true);
     });
   }));
 
