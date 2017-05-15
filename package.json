@@ -34,10 +34,11 @@
     "node": ">= 4"
   },
   "dependencies": {
-    "collapse-prototypes": "^0.2.0",
+    "body-parser": "^1.17.1",
     "debug": "^2.6.6",
+    "express": "^4.15.2",
     "node-debug-helper": "^0.1.2",
-    "uuid": "^3.0.1",
+    "request": "^2.81.0",
     "yargs": "^8.0.1"
   },
   "devDependencies": {
@@ -53,7 +54,6 @@
     "express-generator": "^4.15.0",
     "fs-extra": "^3.0.1",
     "mocha": "^3.3.0",
-    "request": "^2.81.0",
     "rimraf": "^2.6.1"
   }
 }

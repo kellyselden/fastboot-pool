@@ -7,19 +7,14 @@ const init = require('fastboot-pool').default;
 
 let initPromise = init({
   fastbootFilename: `${__dirname}/fastboot`,
-  requestCountUntilFork: 5,
-  shouldHandleSerialization: true
+  requestCountUntilFork: 5
 }).catch(() => {});
 
-router.get('/', (req, res, next) => {
-  return initPromise.then(render => {
-    return render({
-      // these test circular JSON
-      request: req,
-      response: res
-    }).then((result) => {
-      res.send(result.html);
-    }).catch(next);
+router.get('/', (req, res) => {
+  return initPromise.then(proxy => {
+    return proxy(req, res, {
+      works: true
+    });
   });
 });
 
