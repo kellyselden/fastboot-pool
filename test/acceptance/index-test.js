@@ -14,6 +14,7 @@ import {
 import request from 'request';
 import _debug from 'debug';
 
+const isDebugEnabled = _debug.enabled('fastboot-pool');
 const debug = _debug('fastboot-pool');
 
 const requestCountUntilFork = 5;
@@ -288,11 +289,13 @@ function prepServer() {
 function startServer() {
   server = spawn('node', ['bin/www'], {
     env: Object.assign({
-      DEBUG: 'fastboot-pool'
+      DEBUG: 'fastboot-pool,flatten'
     }, process.env)
   });
 
-  server.stderr.pipe(process.stderr);
+  if (isDebugEnabled) {
+    server.stderr.pipe(process.stderr);
+  }
 }
 
 function stopServer(done) {
