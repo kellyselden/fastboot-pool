@@ -14,6 +14,7 @@ import {
 import request from 'request';
 import _debug from 'debug';
 
+const isDebugEnabled = _debug.enabled('fastboot-pool');
 const debug = _debug('fastboot-pool');
 
 const requestCountUntilFork = 5;
@@ -168,7 +169,7 @@ function copyFixture(from, to) {
   );
 }
 
-function sendRequests(requestCount, expectedSuccesses, expectedFailures) {
+function sendRequests(requestCount, expectedSuccesses, expectedFailures, synchronous) {
   let wereRequestsSent;
   let forks = {};
   let responseSuccessCount = 0;
@@ -218,6 +219,29 @@ function sendRequests(requestCount, expectedSuccesses, expectedFailures) {
       resolve();
     }
 
+    function _sendRequest(i) {
+      if (i > requestCount) {
+        return;
+      }
+      request('http://localhost:3000', (error, response, body) => {
+        if (response.statusCode === 500) {
+          expect(body, `request ${i}`).to.contain('Congratulations, you didn\'t make it!');
+
+          responseErrorCount++;
+        } else {
+          expect(body, `request ${i}`).to.contain('Congratulations, you made it!');
+
+          responseSuccessCount++;
+        }
+
+        endIfNeeded();
+
+        if (synchronous) {
+          _sendRequest(++i);
+        }
+      });
+    }
+
     server.stderr.on('data', data => {
       let output = data.toString();
 
@@ -232,21 +256,14 @@ function sendRequests(requestCount, expectedSuccesses, expectedFailures) {
           };
 
           if (!wereRequestsSent) {
-            for (let i = 1; i <= requestCount; i++) {
-              request('http://localhost:3000', (error, response, body) => {
-                if (response.statusCode === 500) {
-                  expect(body, `request ${i}`).to.contain('Congratulations, you didn\'t make it!');
-
-                  responseErrorCount++;
-                } else {
-                  expect(body, `request ${i}`).to.contain('Congratulations, you made it!');
-
-                  responseSuccessCount++;
-                }
-
-                endIfNeeded();
-              });
+            if (synchronous) {
+              _sendRequest(1);
+            } else {
+              for (let i = 1; i <= requestCount; i++) {
+                _sendRequest(i);
+              }
             }
+
             wereRequestsSent = true;
           }
 
@@ -288,11 +305,13 @@ function prepServer() {
 function startServer() {
   server = spawn('node', ['bin/www'], {
     env: Object.assign({
-      DEBUG: 'fastboot-pool'
+      DEBUG: 'fastboot-pool,flatten'
     }, process.env)
   });
 
-  server.stderr.pipe(process.stderr);
+  if (isDebugEnabled) {
+    server.stderr.pipe(process.stderr);
+  }
 }
 
 function stopServer(done) {
@@ -369,6 +388,10 @@ describe('Acceptance', function() {
 
     it('request count not divisible by `requestCountUntilFork`', function() {
       return sendRequests(23, 23, 0);
+    });
+
+    it('handles synchronous requests', function() {
+      return sendRequests(12, 12, 0, true);
     });
   }));
 
