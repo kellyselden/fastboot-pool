@@ -53,7 +53,7 @@
     "eslint-config-sane": "^0.1.0",
     "eslint-mocha": "^0.2.2",
     "express-generator": "^4.15.0",
-    "fastboot": "1.0.0-rc.6",
+    "fastboot": "1.0.0-rc.7",
     "fs-extra": "^3.0.1",
     "mocha": "^3.3.0",
     "rimraf": "^2.6.1"
