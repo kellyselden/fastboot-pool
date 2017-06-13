@@ -17,6 +17,11 @@ import _debug from 'debug';
 const isDebugEnabled = _debug.enabled('fastboot-pool');
 const debug = _debug('fastboot-pool');
 
+const {
+  'npm_package_devDependencies_ember-cli-fastboot': emberCliFastbootVersion,
+  npm_package_devDependencies_fastboot: fastbootVersion
+} = process.env;
+
 const requestCountUntilFork = 5;
 
 let cwd;
@@ -75,7 +80,7 @@ function initMyApp(earlyReturn, saveModules) {
 
     let packageJson = readJsonSync('tmp/my-app/package.json');
 
-    packageJson.devDependencies['ember-cli-fastboot'] = '^1.0.0-beta.18';
+    packageJson.devDependencies['ember-cli-fastboot'] = emberCliFastbootVersion;
 
     writeJsonSync('tmp/my-app/package.json', packageJson);
 
@@ -91,7 +96,7 @@ function initMyApp(earlyReturn, saveModules) {
       cwd: 'tmp'
     });
 
-    run('ember i ember-cli-fastboot', {
+    run(`ember i ember-cli-fastboot@${emberCliFastbootVersion}`, {
       cwd: 'tmp/my-app'
     });
   }
@@ -125,7 +130,7 @@ function initExpress(earlyReturn, saveModules) {
     let packageJson = readJsonSync('tmp/express/package.json');
 
     packageJson.dependencies['fastboot-pool'] = '';
-    packageJson.dependencies['fastboot'] = '^1.0.0-rc.6';
+    packageJson.dependencies['fastboot'] = fastbootVersion;
 
     writeJsonSync('tmp/express/package.json', packageJson);
 
@@ -147,7 +152,7 @@ function initExpress(earlyReturn, saveModules) {
 
     ensureSymlinkSync(process.cwd(), 'tmp/express/node_modules/fastboot-pool');
 
-    run('yarn add fastboot', {
+    run(`yarn add fastboot@${fastbootVersion}`, {
       cwd: 'tmp/express'
     });
   }
