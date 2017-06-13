@@ -381,8 +381,8 @@ describe('Acceptance', function() {
         expect(output).to.not.contain('UnhandledPromiseRejectionWarning');
       });
 
-      // I can't figure out another way to wait for UnhandledPromiseRejectionWarning
-      // since it is the very last thing printed, there's nothing after it to tst for.
+      // I can't figure out another way to wait for UnhandledPromiseRejectionWarning.
+      // Since it's the very last thing printed, there's nothing after it to test for.
       setTimeout(done, 1000);
     });
   }));
