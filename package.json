@@ -8,7 +8,8 @@
     "build": "babel lib -d dist",
     "prepublish": "yarn run build",
     "pretest": "yarn run build",
-    "test": "cross-env DEBUG=fastboot-pool eslint-mocha --eslint-args=\"lib test/!(fixtures)/**/*-test.js\" --mocha-args=\"--compilers js:babel-register test/!(fixtures)/**/*-test.js\"",
+    "test": "cross-env DEBUG=fastboot-pool mocha --compilers js:babel-register \"test/!(fixtures)/**/*-test.js\"",
+    "posttest": "yarn run lint",
     "prelint": "eslint --version",
     "lint": "eslint lib \"test/!(fixtures)/**/*-test.js\"",
     "lint:fix": "yarn run lint -- --fix"
@@ -51,7 +52,6 @@
     "ember-cli-fastboot": "1.0.0-rc.3",
     "eslint": "^3.19.0",
     "eslint-config-sane": "^0.1.0",
-    "eslint-mocha": "^0.2.2",
     "express-generator": "^4.15.0",
     "fastboot": "1.0.0-rc.7",
     "fs-extra": "^3.0.1",
