@@ -6,13 +6,13 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "babel lib -d dist",
-    "prepublish": "yarn run build",
-    "pretest": "yarn run build",
+    "prepublish": "yarn build",
+    "pretest": "yarn build",
     "test": "cross-env DEBUG=fastboot-pool mocha --compilers js:babel-register \"test/!(fixtures)/**/*-test.js\"",
-    "posttest": "yarn run lint",
+    "posttest": "yarn lint",
     "prelint": "eslint --version",
     "lint": "eslint lib test",
-    "lint:fix": "yarn run lint -- --fix"
+    "lint:fix": "yarn lint -- --fix"
   },
   "repository": {
     "type": "git",
