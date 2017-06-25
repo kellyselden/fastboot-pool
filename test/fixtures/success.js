@@ -12,10 +12,10 @@ module.exports = function(req, res, next) {
     throw new Error(`host ${req.get('host')} is wrong`);
   }
   if (!req.query.works) {
-    throw new Error(`query ${JSON.stringify(req.query)} isn\'t working`);
+    throw new Error(`query ${JSON.stringify(req.query)} isn't working`);
   }
   if (!req.body.works) {
-    throw new Error(`body ${JSON.stringify(req.body)} isn\'t working`);
+    throw new Error(`body ${JSON.stringify(req.body)} isn't working`);
   }
 
   app.visit(url.parse(req.url).path, {
