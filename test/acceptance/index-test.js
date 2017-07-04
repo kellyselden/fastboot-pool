@@ -17,10 +17,15 @@ import _debug from 'debug';
 const isDebugEnabled = _debug.enabled('fastboot-pool');
 const debug = _debug('fastboot-pool');
 
-const {
-  'npm_package_devDependencies_ember-cli-fastboot': emberCliFastbootVersion,
+let {
+  npm_package_devDependencies_ember_cli_fastboot: emberCliFastbootVersion,
   npm_package_devDependencies_fastboot: fastbootVersion
 } = process.env;
+
+// temporary until AppVeyor upgrades to yarn v0.27.5
+if (!emberCliFastbootVersion) {
+  emberCliFastbootVersion = process.env['npm_package_devDependencies_ember-cli-fastboot'];
+}
 
 const requestCountUntilFork = 5;
 
