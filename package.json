@@ -49,7 +49,7 @@
     "chai": "^4.0.0",
     "cross-env": "^5.0.0",
     "ember-cli": "^2.13.1",
-    "ember-cli-fastboot": "1.0.0-rc.5",
+    "ember-cli-fastboot": "1.0.0-rc6",
     "eslint": "^4.1.0",
     "eslint-config-sane": "^0.1.0",
     "express-generator": "^4.15.0",
