@@ -74,7 +74,7 @@ function initMyApp(earlyReturn, saveModules) {
 
     removeSync('tmp/my-app');
 
-    run('ember new my-app -sg -sn', {
+    run('ember new my-app -sg -sn --yarn', {
       cwd: 'tmp'
     });
 
