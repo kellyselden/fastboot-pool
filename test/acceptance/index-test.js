@@ -132,35 +132,32 @@ function initExpress(earlyReturn, saveModules) {
       moveSync('tmp/yarn.lock', 'tmp/express/yarn.lock');
     }
 
-    let packageJson = readJsonSync('tmp/express/package.json');
-
-    packageJson.dependencies['fastboot-pool'] = '';
-    packageJson.dependencies['fastboot'] = fastbootVersion;
-
-    writeJsonSync('tmp/express/package.json', packageJson);
-
-    ensureSymlinkSync(process.cwd(), 'tmp/express/node_modules/fastboot-pool');
-
     run('yarn', {
       cwd: 'tmp/express'
     });
+
+    let packageJson = readJsonSync('tmp/express/package.json');
+
+    packageJson.dependencies['fastboot'] = fastbootVersion;
+
+    writeJsonSync('tmp/express/package.json', packageJson);
   } else {
     run('express express', {
       cwd: 'tmp'
     });
 
-    let packageJson = readJsonSync('tmp/express/package.json');
-
-    packageJson.dependencies['fastboot-pool'] = '';
-
-    writeJsonSync('tmp/express/package.json', packageJson);
-
-    ensureSymlinkSync(process.cwd(), 'tmp/express/node_modules/fastboot-pool');
-
     run(`yarn add fastboot@${fastbootVersion}`, {
       cwd: 'tmp/express'
     });
   }
+
+  let packageJson = readJsonSync('tmp/express/package.json');
+
+  packageJson.dependencies['fastboot-pool'] = '';
+
+  writeJsonSync('tmp/express/package.json', packageJson);
+
+  ensureSymlinkSync(process.cwd(), 'tmp/express/node_modules/fastboot-pool');
 }
 
 function copyFixture(from, to) {
