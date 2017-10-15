@@ -301,10 +301,6 @@ function copyFixtures(getFastbootFixtureName, getClientFixtureName) {
     copyFixture(getClientFixtureName(), 'my-app/app/routes/application.js');
   } else {
     removeSync('tmp/my-app/app/routes/application.js');
-
-    run('ember g route application', {
-      cwd: 'tmp/my-app'
-    });
   }
 }
 
