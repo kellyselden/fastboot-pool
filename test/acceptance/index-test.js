@@ -353,7 +353,7 @@ describe('Acceptance', function() {
       before(function() {
         this.timeout(10 * 60 * 1000);
 
-        init(true, false);
+        init(false, false);
 
         copyFixtures(getFastbootFixtureName, getClientFixtureName);
 
