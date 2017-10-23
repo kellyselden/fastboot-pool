@@ -40,7 +40,7 @@
     "express": "^4.15.2",
     "node-debug-helper": "^0.1.2",
     "request": "^2.81.0",
-    "yargs": "^9.0.1"
+    "yargs": "^10.0.3"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
