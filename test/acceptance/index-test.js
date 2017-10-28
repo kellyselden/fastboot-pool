@@ -331,6 +331,12 @@ function cleanUp() {
 describe('Acceptance', function() {
   this.timeout(60 * 1000);
 
+  before(function() {
+    this.timeout(5 * 60 * 1000);
+
+    init(false, false);
+  });
+
   function bootstrap(callback) {
     return function() {
       let getFastbootFixtureName;
@@ -346,10 +352,6 @@ describe('Acceptance', function() {
       });
 
       before(function() {
-        this.timeout(10 * 60 * 1000);
-
-        init(false, false);
-
         copyFixtures(getFastbootFixtureName, getClientFixtureName);
 
         run('ember b', {
