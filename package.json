@@ -52,6 +52,7 @@
     "ember-cli-fastboot": "^1.0.3",
     "eslint": "^4.1.0",
     "eslint-config-sane": "^0.3.0",
+    "eslint-plugin-prefer-let": "^1.0.0",
     "express-generator": "^4.15.0",
     "fastboot": "^1.0.0",
     "fs-extra": "^4.0.0",
