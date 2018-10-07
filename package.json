@@ -50,7 +50,7 @@
     "cross-env": "^5.0.0",
     "ember-cli": "^3.0.2",
     "ember-cli-fastboot": "^2.0.0",
-    "eslint": "^4.1.0",
+    "eslint": "^5.0.0",
     "eslint-config-sane": "^0.6.0",
     "eslint-plugin-prefer-let": "^1.0.0",
     "express-generator": "^4.15.0",
