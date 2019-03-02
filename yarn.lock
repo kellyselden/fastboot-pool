@@ -6547,10 +6547,10 @@ remove-trailing-separator@^1.0.1:
   resolved "https://registry.yarnpkg.com/remove-trailing-separator/-/remove-trailing-separator-1.1.0.tgz#c24bce2a283adad5bc3f58e0d48249b92379d8ef"
   integrity sha1-wkvOKig62tW8P1jg1IJJuSN52O8=
 
-renovate-config-standard@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/renovate-config-standard/-/renovate-config-standard-1.0.0.tgz#874d556b6728fbc9d63e8f0bf3090e86f5d66f4b"
-  integrity sha512-Q3ZHngMxofSXADCyNYVaWZY77JLdzUzZXFEhM2W/qrGTU42afZYE4lsp6VoPN8sHqVC/4fuVNIfitQFClgJwHA==
+renovate-config-standard@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/renovate-config-standard/-/renovate-config-standard-2.0.0.tgz#4474b69ced02f7e14866dd19421a6e8a008427d7"
+  integrity sha512-QhKlkh8BCTFIFdSgWDbyAAO2dWkmy4ex7Ax62Slo5OE3Vc710a1k1dD+5JNpdBuSRPt6+uW47AD79Y+CP0+rhg==
 
 repeat-element@^1.1.2:
   version "1.1.3"
