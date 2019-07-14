@@ -3111,10 +3111,19 @@ escape-string-regexp@1.0.5, escape-string-regexp@^1.0.2, escape-string-regexp@^1
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
   integrity sha1-G2HAViGQqN/2rjuyzwIAyhMLhtQ=
 
-eslint-config-sane@^0.8.0:
+eslint-config-sane@0.8.0:
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/eslint-config-sane/-/eslint-config-sane-0.8.0.tgz#fa5db77b54509d9b40506b643ed0d2c90f308db9"
   integrity sha512-AE4WOpPjLQrpRKe8az39B6ynWwi5q3cDNQz1WeVM99YSVJQxIWqlbm3jROnLfL/AqoWxYfiuPOV61jw7FKsRpw==
+
+eslint-plugin-json-files@0.6.1:
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-json-files/-/eslint-plugin-json-files-0.6.1.tgz#99e8413e0ddfcc8b5a5614f2106a6798442870e1"
+  integrity sha512-HJycqTD0ArzXyDi0X87eYigzOKXphJWYu5K1pZYwBCJsAoyhGshFAmtubXdZq8vaj/RT4Da4MrO3dcfLTs8Qow==
+  dependencies:
+    requireindex "^1.2.0"
+    semver "^6.0.0"
+    sort-package-json "^1.22.1"
 
 eslint-plugin-prefer-let@^1.0.0:
   version "1.0.1"
@@ -5650,7 +5659,7 @@ nice-try@^1.0.4:
   resolved "https://registry.yarnpkg.com/nice-try/-/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"
   integrity sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==
 
-node-debug-helper@^0.5.0:
+node-debug-helper@0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/node-debug-helper/-/node-debug-helper-0.5.0.tgz#3491ff38123d5ae3dd37a6ca39fb6e43833c1dd2"
   integrity sha512-aLZi1hTwu8++/rDSmSQpM53DSws8Hjtkcqe1j1S+IIwBAUghcQ3ZkWOTV2yhaOWKs9l1scUddC7XLpm3+am/PA==
@@ -6546,6 +6555,11 @@ require-main-filename@^1.0.1:
   resolved "https://registry.yarnpkg.com/require-main-filename/-/require-main-filename-1.0.1.tgz#97f717b69d48784f5f526a6c5aa8ffdda055a4d1"
   integrity sha1-l/cXtp1IeE9fUmpsWqj/3aBVpNE=
 
+requireindex@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/requireindex/-/requireindex-1.2.0.tgz#3463cdb22ee151902635aa6c9535d4de9c2ef1ef"
+  integrity sha512-L9jEkOi3ASd9PYit2cwRfyppc9NoABujTP8/5gFcbERmo5jUoAKovIC3fsF17pkTnGsrByysqX+Kxd2OTNI1ww==
+
 requireindex@~1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/requireindex/-/requireindex-1.1.0.tgz#e5404b81557ef75db6e49c5a72004893fe03e162"
@@ -6704,6 +6718,11 @@ semver@^5.3.0, semver@^5.4.1, semver@^5.5.0, semver@^5.5.1, semver@^5.6.0:
   version "5.7.0"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.7.0.tgz#790a7cf6fea5459bac96110b29b60412dc8ff96b"
   integrity sha512-Ya52jSX2u7QKghxeoFGpLwCtGlt7j0oY9DYb5apt9nPlJ42ID+ulTXESnt/qAQcoSERyZ5sl3LDIOw0nAn/5DA==
+
+semver@^6.0.0:
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/semver/-/semver-6.2.0.tgz#4d813d9590aaf8a9192693d6c85b9344de5901db"
+  integrity sha512-jdFC1VdUGT/2Scgbimf7FSx9iJLXoqfglSF+gJeuNWVpiE37OIbc1jywR/GJyFdz3mnkz2/id0L0J/cr0izR5A==
 
 send@0.16.2:
   version "0.16.2"
@@ -6906,7 +6925,7 @@ sort-object-keys@^1.1.2:
   resolved "https://registry.yarnpkg.com/sort-object-keys/-/sort-object-keys-1.1.2.tgz#d3a6c48dc2ac97e6bc94367696e03f6d09d37952"
   integrity sha1-06bEjcKsl+a8lDZ2luA/bQnTeVI=
 
-sort-package-json@^1.15.0:
+sort-package-json@^1.15.0, sort-package-json@^1.22.1:
   version "1.22.1"
   resolved "https://registry.yarnpkg.com/sort-package-json/-/sort-package-json-1.22.1.tgz#384ce7a098cd13be4109800d5ce2f0cf7826052e"
   integrity sha512-uVINQraFQvnlzNHFnQOT4MYy0qonIEzKwhrI2yrTiQjNo5QF4h3ffrnCk7a95QAwoK/RdkO/w8W9tJIcaOWC7g==
