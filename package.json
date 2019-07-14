@@ -11,7 +11,7 @@
     "test": "cross-env DEBUG=fastboot-pool mocha --require babel-register \"test/!(fixtures)/**/*-test.js\"",
     "posttest": "yarn lint",
     "prelint": "eslint --version",
-    "lint": "eslint lib test",
+    "lint": "eslint lib test package.json --ext js,json",
     "lint:fix": "yarn lint -- --fix"
   },
   "repository": {
@@ -38,7 +38,7 @@
     "body-parser": "^1.17.1",
     "debug": "^4.0.0",
     "express": "^4.15.2",
-    "node-debug-helper": "^0.5.0",
+    "node-debug-helper": "0.5.0",
     "request": "^2.81.0",
     "yargs": "^12.0.0"
   },
@@ -51,7 +51,8 @@
     "ember-cli": "^3.0.2",
     "ember-cli-fastboot": "^2.0.0",
     "eslint": "^5.0.0",
-    "eslint-config-sane": "^0.8.0",
+    "eslint-config-sane": "0.8.0",
+    "eslint-plugin-json-files": "0.6.1",
     "eslint-plugin-prefer-let": "^1.0.0",
     "express-generator": "^4.15.0",
     "fastboot": "^2.0.0",
