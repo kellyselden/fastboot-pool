@@ -317,6 +317,10 @@ function startServer() {
 }
 
 function stopServer(done) {
+  if (!server) {
+    return;
+  }
+
   server.on('exit', () => {
     server = null;
     done();
