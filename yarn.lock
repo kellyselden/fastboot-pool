@@ -3121,10 +3121,10 @@ escape-string-regexp@1.0.5, escape-string-regexp@^1.0.2, escape-string-regexp@^1
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
   integrity sha1-G2HAViGQqN/2rjuyzwIAyhMLhtQ=
 
-eslint-config-sane@0.8.0:
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-sane/-/eslint-config-sane-0.8.0.tgz#fa5db77b54509d9b40506b643ed0d2c90f308db9"
-  integrity sha512-AE4WOpPjLQrpRKe8az39B6ynWwi5q3cDNQz1WeVM99YSVJQxIWqlbm3jROnLfL/AqoWxYfiuPOV61jw7FKsRpw==
+eslint-config-sane@0.8.2:
+  version "0.8.2"
+  resolved "https://registry.yarnpkg.com/eslint-config-sane/-/eslint-config-sane-0.8.2.tgz#abc5b63740807df5458b1216c7531fbcbb06411e"
+  integrity sha512-gbKA9MPpmF9m05azhV4fhol5byLM3IOOlg6++qMmGy22xix75Xwc2rvSn0PymD9Ql4sJcHNNuXKa37/Zf0DAqw==
 
 eslint-plugin-json-files@0.6.1:
   version "0.6.1"
