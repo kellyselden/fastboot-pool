@@ -3201,10 +3201,10 @@ eslint-config-sane@0.8.2:
   resolved "https://registry.yarnpkg.com/eslint-config-sane/-/eslint-config-sane-0.8.2.tgz#abc5b63740807df5458b1216c7531fbcbb06411e"
   integrity sha512-gbKA9MPpmF9m05azhV4fhol5byLM3IOOlg6++qMmGy22xix75Xwc2rvSn0PymD9Ql4sJcHNNuXKa37/Zf0DAqw==
 
-eslint-plugin-json-files@0.6.1:
-  version "0.6.1"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-json-files/-/eslint-plugin-json-files-0.6.1.tgz#99e8413e0ddfcc8b5a5614f2106a6798442870e1"
-  integrity sha512-HJycqTD0ArzXyDi0X87eYigzOKXphJWYu5K1pZYwBCJsAoyhGshFAmtubXdZq8vaj/RT4Da4MrO3dcfLTs8Qow==
+eslint-plugin-json-files@0.6.2:
+  version "0.6.2"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-json-files/-/eslint-plugin-json-files-0.6.2.tgz#280d288bfee4e00d4ad865ef4cd73cf19b7f0045"
+  integrity sha512-p0Z+1hq12MnDX8T/gMFP4R6uvN381uaKS6n4MmBxX3qkbP1r4yuofoeruCBsgXN7BbYkflKUeiX7Sof/ZjVspw==
   dependencies:
     requireindex "^1.2.0"
     semver "^6.0.0"
