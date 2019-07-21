@@ -14,6 +14,7 @@ module.exports = function(req, res) {
     return res.status(500).send('Congratulations, you failed!');
   }
 
+  // eslint-disable-next-line node/no-deprecated-api
   app.visit(url.parse(req.url).path, {
     request: req,
     response: res

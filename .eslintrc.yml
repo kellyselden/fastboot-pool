@@ -1,7 +1,9 @@
 parserOptions:
-  ecmaVersion: 6
+  ecmaVersion: 2018
   sourceType: 'module'
 env:
   es6: true
-  node: true
-extends: 'sane'
+extends: 'sane-node'
+rules:
+  node/no-unsupported-features/es-syntax: 0
+  no-process-exit: 0

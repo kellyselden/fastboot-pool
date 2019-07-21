@@ -3,6 +3,7 @@
 const express = require('express');
 const router = express.Router();
 
+// eslint-disable-next-line node/no-missing-require
 const init = require('fastboot-pool').default;
 
 let initPromise = init({
