@@ -34,6 +34,9 @@
   "engines": {
     "node": ">= 8"
   },
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "body-parser": "^1.17.1",
     "debug": "^4.0.0",
