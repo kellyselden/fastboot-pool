@@ -3390,10 +3390,10 @@ escape-string-regexp@1.0.5, escape-string-regexp@^1.0.2, escape-string-regexp@^1
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
   integrity sha1-G2HAViGQqN/2rjuyzwIAyhMLhtQ=
 
-eslint-config-sane-node@0.2.2:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/eslint-config-sane-node/-/eslint-config-sane-node-0.2.2.tgz#9811512ed05271543ae89eac3d74bbb6ba2e7bd3"
-  integrity sha512-hSKS0qeHDtHksnTYgmxSn8NPO2LBs7UzZDH/KK6EbQwA+Ah3/JF5cMHgRYhiVBEi7EAiHPe4e2OJRkEge9WW+Q==
+eslint-config-sane-node@0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-sane-node/-/eslint-config-sane-node-0.3.0.tgz#3cc7657dce62d4df3fd3b0a71a5864bb05a6954f"
+  integrity sha512-n8lpLZ0hUG/Za/oNOSk4yH9gvmuIT8gJCAZ7T8b8I5sUKtZA57CWUXOxVc7ORXqVspH79+r/KnVm4kt3cS9mnw==
 
 eslint-config-sane@0.8.5:
   version "0.8.5"
