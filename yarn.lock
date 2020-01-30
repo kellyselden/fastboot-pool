@@ -7537,6 +7537,11 @@ sshpk@^1.7.0:
     safer-buffer "^2.0.2"
     tweetnacl "~0.14.0"
 
+standard-node-template@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/standard-node-template/-/standard-node-template-0.0.1.tgz#d224e5a1b2c1562ec88879370cd42a9c03c69cf7"
+  integrity sha512-pTrIJ9OOQ81H4rfBljsELWgYS6DiOJlfj/BVYLE3hecKG+c+YAu0l00wH0/maZjmY5RRG/N5sSXVGrcw8Lo1fQ==
+
 static-extend@^0.1.1:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/static-extend/-/static-extend-0.1.2.tgz#60809c39cbff55337226fd5e0b520f341f1fb5c6"
