@@ -1,4 +1,5 @@
-import { expect } from 'chai';
+import { describe } from '../helpers/mocha';
+import { expect } from '../helpers/chai';
 import { spawn, execSync } from 'child_process';
 import {
   ensureDirSync,
@@ -332,7 +333,7 @@ function cleanUp() {
   process.chdir(cwd);
 }
 
-describe('Acceptance', function() {
+describe(function() {
   this.timeout(60 * 1000);
 
   before(function() {

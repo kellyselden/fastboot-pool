@@ -1,9 +1,0 @@
-env:
-  mocha: true
-plugins:
-  - mocha
-extends:
-  plugin:mocha/recommended
-rules:
-  mocha/no-setup-in-describe: 0
-  mocha/no-sibling-hooks: 0
