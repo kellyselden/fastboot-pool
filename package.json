@@ -11,7 +11,7 @@
     "test": "cross-env DEBUG=fastboot-pool mocha --require babel-register \"test/!(fixtures)/**/*-test.js\" --retries 2",
     "posttest": "yarn lint",
     "prelint": "eslint --version",
-    "lint": "eslint lib test package.json --ext js,json",
+    "lint": "eslint . --ext js,json",
     "lint:fix": "yarn lint -- --fix"
   },
   "repository": {
