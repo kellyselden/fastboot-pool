@@ -8,11 +8,9 @@
     "build": "babel lib -d dist",
     "prepublish": "yarn build",
     "pretest": "yarn build",
-    "test": "cross-env DEBUG=fastboot-pool mocha --require babel-register \"test/!(fixtures)/**/*-test.js\" --retries 2",
+    "test": "cross-env DEBUG=fastboot-pool mocha --require babel-register --recursive --retries 2",
     "posttest": "yarn lint",
-    "prelint": "eslint --version",
-    "lint": "eslint . --ext js,json",
-    "lint:fix": "yarn lint -- --fix"
+    "lint": "eslint . --ext js,json"
   },
   "repository": {
     "type": "git",
