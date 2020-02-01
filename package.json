@@ -9,7 +9,7 @@
     "lint": "eslint . --ext js,json",
     "prepublish": "yarn build",
     "pretest": "yarn build",
-    "test": "cross-env DEBUG=fastboot-pool mocha --require babel-register \"test/!(fixtures)/**/*-test.js\" --retries 2"
+    "test": "mocha --require babel-register \"test/!(fixtures)/**/*-test.js\" --retries 2"
   },
   "repository": {
     "type": "git",
@@ -48,7 +48,6 @@
     "babel-preset-env": "^1.4.0",
     "babel-register": "^6.24.1",
     "chai": "^4.2.0",
-    "cross-env": "^6.0.0",
     "ember-cli": "^3.0.2",
     "ember-cli-fastboot": "^2.0.0",
     "eslint": "^6.8.0",
