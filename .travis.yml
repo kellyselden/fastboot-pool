@@ -6,6 +6,9 @@ branches:
   - master
   # npm version tags
   - /^v\d+\.\d+\.\d+$/
+env:
+  global:
+  - DEBUG=fastboot-pool
 cache:
   yarn: true
 jobs:

@@ -15,7 +15,7 @@
         "--colors",
         "--require",
         "babel-register",
-        "${workspaceFolder}/test/!(fixtures)/**/*-test.js"
+        "test/!(fixtures)/**/*-test.js"
       ],
       "internalConsoleOptions": "openOnSessionStart"
     }
