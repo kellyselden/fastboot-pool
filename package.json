@@ -3,6 +3,9 @@
   "version": "0.6.3",
   "description": "Manage Ember FastBoot memory usage using process pools",
   "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "babel lib -d dist",
@@ -31,9 +34,6 @@
   "engines": {
     "node": ">= 8"
   },
-  "files": [
-    "dist"
-  ],
   "dependencies": {
     "body-parser": "^1.17.1",
     "debug": "^4.0.0",
