@@ -218,6 +218,7 @@ function sendRequests(requestCount, expectedSuccesses, expectedFailures, sequent
       if (i > requestCount) {
         return;
       }
+
       request('http://localhost:3000?works=true', (error, response, body) => {
         if (error) {
           reject(error);
