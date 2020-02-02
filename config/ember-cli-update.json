@@ -19,7 +19,8 @@
           "name": "@kellyselden/node-template",
           "options": [
             "--repo-slug=kellyselden/fastboot-pool",
-            "--ci-provider=travis-ci"
+            "--travis-ci",
+            "--appveyor=nnjfs5tkwvgqch7i"
           ]
         }
       ]
