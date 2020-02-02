@@ -311,11 +311,7 @@ function prepServer() {
 }
 
 function startServer() {
-  server = spawn('node', ['bin/www'], {
-    env: Object.assign({
-      DEBUG: 'fastboot-pool,flatten'
-    }, process.env)
-  });
+  server = spawn('node', ['bin/www']);
 
   if (isDebugEnabled) {
     server.stderr.pipe(process.stderr);

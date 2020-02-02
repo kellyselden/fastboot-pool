@@ -17,6 +17,9 @@
         "babel-register",
         "test/!(fixtures)/**/*-test.js"
       ],
+      "env": {
+        "DEBUG": "fastboot-pool,flatten"
+      },
       "internalConsoleOptions": "openOnSessionStart",
       "outputCapture": "std"
     }
