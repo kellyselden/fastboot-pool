@@ -173,7 +173,7 @@ function sendRequests(requestCount, expectedSuccesses, expectedFailures, sequent
   let expectedForkCount = getExpectedForkCount(requestCount);
   let expectedForkKills = getExpectedForkKills(requestCount);
 
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     function endIfNeeded() {
       let forkKeys = Object.keys(forks);
 
@@ -219,6 +219,11 @@ function sendRequests(requestCount, expectedSuccesses, expectedFailures, sequent
         return;
       }
       request('http://localhost:3000?works=true', (error, response, body) => {
+        if (error) {
+          reject(error);
+          return;
+        }
+
         if (response.statusCode === 500) {
           expect(body, `request ${i}`).to.contain('Congratulations, you failed!');
 
