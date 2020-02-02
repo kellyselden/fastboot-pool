@@ -17,7 +17,8 @@
         "babel-register",
         "test/!(fixtures)/**/*-test.js"
       ],
-      "internalConsoleOptions": "openOnSessionStart"
+      "internalConsoleOptions": "openOnSessionStart",
+      "outputCapture": "std"
     }
   ]
 }
