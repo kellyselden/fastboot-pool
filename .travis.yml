@@ -8,7 +8,7 @@ branches:
   - /^v\d+\.\d+\.\d+$/
 env:
   global:
-  - DEBUG=fastboot-pool
+  - DEBUG=fastboot-pool,flatten
 cache:
   yarn: true
 jobs:
