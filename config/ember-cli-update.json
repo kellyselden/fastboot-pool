@@ -20,7 +20,8 @@
           "options": [
             "--repo-slug=kellyselden/fastboot-pool",
             "--travis-ci",
-            "--appveyor=nnjfs5tkwvgqch7i"
+            "--appveyor=nnjfs5tkwvgqch7i",
+            "--renovate"
           ]
         }
       ]
