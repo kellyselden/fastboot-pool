@@ -32,7 +32,7 @@
   },
   "homepage": "https://github.com/kellyselden/fastboot-pool#readme",
   "engines": {
-    "node": ">= 8"
+    "node": ">=10.12"
   },
   "dependencies": {
     "body-parser": "^1.17.1",
