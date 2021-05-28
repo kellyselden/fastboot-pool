@@ -8130,10 +8130,10 @@ sshpk@^1.7.0:
     safer-buffer "^2.0.2"
     tweetnacl "~0.14.0"
 
-standard-node-template@1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/standard-node-template/-/standard-node-template-1.0.0.tgz#493b85abba97160af904f2dd53928e7dd2e4c4f9"
-  integrity sha512-biL96veWp9MCnYtajSk1KYNenxihVy3W6syJE6B6k/JK3yh9qC8kNtIOFdREvTzsW2+DMHvOtF2iDNRiXL9QdQ==
+standard-node-template@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/standard-node-template/-/standard-node-template-2.0.0.tgz#79ebc6781735dfd7f6bfdc4f117bd6fdf963c230"
+  integrity sha512-ZlSqPMYtkd9s4zWEZq6CJH/dkE3u8gUwKYIhJ+o7ZlWBG2wsJPMhS8gvRQiLMtO0pD1htfYTLNBLvzcTwdxcBw==
 
 static-extend@^0.1.1:
   version "0.1.2"
