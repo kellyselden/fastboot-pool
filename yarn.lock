@@ -913,10 +913,10 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@kellyselden/node-template@1.4.5":
-  version "1.4.5"
-  resolved "https://registry.yarnpkg.com/@kellyselden/node-template/-/node-template-1.4.5.tgz#c250b2fc5b7f64a70b8f64a8c8d91151b8bdd950"
-  integrity sha512-9w8Z7AgWSt9leJv6zygaS0qwe2Qt7bpzOhpd3w4jCZFUmHs+olQjHSTWXzmDqQc1IGw45qLbeeHDIPDRvQSeHw==
+"@kellyselden/node-template@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@kellyselden/node-template/-/node-template-2.0.0.tgz#55e80dd7dc8a2ef38c2d813e5242718c16b19301"
+  integrity sha512-fsNbQee3EFlaoUukep4A+weaMsCaq8ZnkTwQ3K9+LiwvYVxIjOWmidpPiBiUMhnKbkEJGL48MDivVcZK0t7AuA==
 
 "@nodelib/fs.scandir@2.1.3":
   version "2.1.3"
