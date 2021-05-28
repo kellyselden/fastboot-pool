@@ -1,10 +1,7 @@
 environment:
   matrix:
     - nodejs_version: "12"
-<<<<<<< HEAD
   DEBUG: "fastboot-pool,flatten"
-=======
->>>>>>> 252f724... v1.4.5...v2.0.0
 
 branches:
   only:
