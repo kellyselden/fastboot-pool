@@ -3849,10 +3849,10 @@ escodegen@^1.14.1:
   optionalDependencies:
     source-map "~0.6.1"
 
-eslint-config-sane-node@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/eslint-config-sane-node/-/eslint-config-sane-node-1.0.1.tgz#d2d9e65ca8a2525178e84b18890bfe80bc0615a9"
-  integrity sha512-dv5DLHQV5fNOfh3khAzC5eqrYkxNSiHAMbXtF1rRMutVm3H45oSBidrb6nNHTHEYX+Qej6G9gxW79GzFBslI0w==
+eslint-config-sane-node@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-sane-node/-/eslint-config-sane-node-1.1.0.tgz#ca8548db7413248171965c815dd2673b8944b6e3"
+  integrity sha512-B+rtAhww9b3hOGPCkoF+qPMbfUL0B7QCTeTunmYeZaQwAOvFZ8RDWwXo2eZfYQkj9cN33hN1e8fXJkAWkXN15g==
 
 eslint-config-sane@^1.0.0:
   version "1.0.0"
