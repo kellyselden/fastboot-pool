@@ -913,10 +913,10 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@kellyselden/node-template@2.0.2":
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/@kellyselden/node-template/-/node-template-2.0.2.tgz#267ca4d6333bc2bcbb90e2a54104ff75de7dcb03"
-  integrity sha512-OdN/awg6y8DnT7f5nWnAxM2IC8adw4GyN4RKQ2OWkjrYLPhC54hIBsh0vTbxZG8k0IrXbL9S50egLK40TDsnDw==
+"@kellyselden/node-template@2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@kellyselden/node-template/-/node-template-2.1.0.tgz#8f8c838d0548c2c68b6dcc1134b4f31fb45d7d24"
+  integrity sha512-heGdqK86aS438XI+VyVxLPhjtZpC2qYz9/TWQW3tVvekpRsiEd3QF1vi4TrUPjSs5C1PsTlVpCUnNY/55UYWjQ==
 
 "@nodelib/fs.scandir@2.1.3":
   version "2.1.3"
@@ -3849,10 +3849,10 @@ escodegen@^1.14.1:
   optionalDependencies:
     source-map "~0.6.1"
 
-eslint-config-sane-node@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/eslint-config-sane-node/-/eslint-config-sane-node-1.0.1.tgz#d2d9e65ca8a2525178e84b18890bfe80bc0615a9"
-  integrity sha512-dv5DLHQV5fNOfh3khAzC5eqrYkxNSiHAMbXtF1rRMutVm3H45oSBidrb6nNHTHEYX+Qej6G9gxW79GzFBslI0w==
+eslint-config-sane-node@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-sane-node/-/eslint-config-sane-node-1.1.0.tgz#ca8548db7413248171965c815dd2673b8944b6e3"
+  integrity sha512-B+rtAhww9b3hOGPCkoF+qPMbfUL0B7QCTeTunmYeZaQwAOvFZ8RDWwXo2eZfYQkj9cN33hN1e8fXJkAWkXN15g==
 
 eslint-config-sane@^1.0.0:
   version "1.0.0"

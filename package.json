@@ -43,7 +43,7 @@
     "yargs": "^17.0.0"
   },
   "devDependencies": {
-    "@kellyselden/node-template": "2.0.2",
+    "@kellyselden/node-template": "2.1.0",
     "babel-cli": "^6.24.1",
     "babel-preset-env": "^1.4.0",
     "babel-register": "^6.24.1",
@@ -52,7 +52,7 @@
     "ember-cli-fastboot": "^2.0.0",
     "eslint": "^7.28.0",
     "eslint-config-sane": "^1.0.0",
-    "eslint-config-sane-node": "^1.0.1",
+    "eslint-config-sane-node": "^1.1.0",
     "eslint-plugin-json-files": "^1.1.0",
     "eslint-plugin-mocha": "^9.0.0",
     "eslint-plugin-node": "^11.1.0",
