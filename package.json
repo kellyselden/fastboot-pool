@@ -50,7 +50,7 @@
     "chai": "^4.3.4",
     "ember-cli": "^3.0.2",
     "ember-cli-fastboot": "^2.0.0",
-    "eslint": "^7.28.0",
+    "eslint": "^8.0.0",
     "eslint-config-sane": "^1.0.0",
     "eslint-config-sane-node": "^1.1.0",
     "eslint-plugin-json-files": "^1.1.0",
