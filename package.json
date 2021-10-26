@@ -56,7 +56,7 @@
     "eslint-plugin-json-files": "^1.1.0",
     "eslint-plugin-mocha": "^9.0.0",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-prefer-let": "^1.1.0",
+    "eslint-plugin-prefer-let": "^3.0.0",
     "express-generator": "^4.15.0",
     "fastboot": "^3.0.0",
     "fs-extra": "^10.0.0",
