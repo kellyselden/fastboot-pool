@@ -12,7 +12,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/setup-node@v2
+    - uses: actions/setup-node@v3
 
     - run: yarn install --frozen-lockfile
     - run: npm run lint
@@ -31,7 +31,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/setup-node@v2
+    - uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node }}
 
@@ -51,7 +51,7 @@ jobs:
       with:
         ref: ${{ github.head_ref }}
         token: ${{ secrets.GitHubToken }}
-    - uses: actions/setup-node@v2
+    - uses: actions/setup-node@v3
 
     - uses: kellyselden/ember-cli-update-action@v3
       with:
