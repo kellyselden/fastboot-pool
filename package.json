@@ -12,7 +12,7 @@
     "lint": "eslint . --ext js,json",
     "prepublish": "yarn build",
     "pretest": "yarn build",
-    "test": "mocha --require babel-register \"test/!(fixtures)/**/*-test.js\" --retries 2"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
