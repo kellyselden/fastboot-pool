@@ -1241,10 +1241,10 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@kellyselden/node-template@2.1.1":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@kellyselden/node-template/-/node-template-2.1.1.tgz#2b82f206a96479f8c4df117cd1b3fbc225231489"
-  integrity sha512-fD2k7QXeXZofxW3JXW4pMaO032urp2wgS8SICBnltmsE6tHfnTw6UpsO9KOs3VgyNsuiNLeRkRe4YMHb+To7LA==
+"@kellyselden/node-template@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@kellyselden/node-template/-/node-template-2.2.0.tgz#78c7efb4eeeb7900a924461cd32d047a68e91a15"
+  integrity sha512-6D7bT7MMFNoDluhBLv5zB9Nf54vK2cPg18XML8g5U1nDpVQX+e2kvGSrjYLgKL+uGIXpQ9t5BWzhDWPSnRz6Nw==
 
 "@nodelib/fs.scandir@2.1.3":
   version "2.1.3"
