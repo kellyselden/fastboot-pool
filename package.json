@@ -1,6 +1,6 @@
 {
   "name": "fastboot-pool",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Manage Ember FastBoot memory usage using process pools",
   "main": "dist/index.js",
   "files": [
