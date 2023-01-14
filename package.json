@@ -64,6 +64,6 @@
     "mocha-helpers": "^6.2.1",
     "renovate-config-standard": "2.1.2",
     "rimraf": "^3.0.0",
-    "standard-node-template": "2.0.0"
+    "standard-node-template": "3.0.0"
   }
 }
