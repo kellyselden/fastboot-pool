@@ -58,7 +58,7 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prefer-let": "^3.0.1",
     "express-generator": "^4.15.0",
-    "fastboot": "^3.0.0",
+    "fastboot": "^4.0.0",
     "fs-extra": "^10.0.0",
     "mocha": "^10.2.0",
     "mocha-helpers": "^6.2.1",
