@@ -32,7 +32,7 @@
   },
   "homepage": "https://github.com/kellyselden/fastboot-pool#readme",
   "engines": {
-    "node": ">=12.13"
+    "node": ">=14.15"
   },
   "dependencies": {
     "body-parser": "^1.17.1",
@@ -64,6 +64,6 @@
     "mocha-helpers": "^6.2.1",
     "renovate-config-standard": "2.1.2",
     "rimraf": "^3.0.0",
-    "standard-node-template": "2.0.0"
+    "standard-node-template": "3.0.0"
   }
 }
