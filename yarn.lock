@@ -4021,10 +4021,10 @@ ember-cli-babel@^7.26.6:
     rimraf "^3.0.1"
     semver "^5.5.0"
 
-ember-cli-fastboot@^3.2.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/ember-cli-fastboot/-/ember-cli-fastboot-3.2.0.tgz#ef6605b82a7bb1410d058c4404b04eeef252c698"
-  integrity sha512-wBywPO377TFxNt8y2FFvUnWXa/rFuDDw1geY6BRIR2Plo+bYUS1E9PC/0hUGuLu+GTpKJaKl7we0794smQlsAQ==
+ember-cli-fastboot@^4.0.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/ember-cli-fastboot/-/ember-cli-fastboot-4.1.0.tgz#c0446853fe68f33f53c37509cf21daf932811716"
+  integrity sha512-OQ1+eEVK8OBh0M0KY6Rrxu2JqdAByQlY4SWzR/06cTftcDSKpUL44DTrWPs7Te4bEgQfjbic2g8AUOVw+2YvUA==
   dependencies:
     broccoli-concat "^4.2.5"
     broccoli-file-creator "^2.1.1"
@@ -4036,8 +4036,8 @@ ember-cli-fastboot@^3.2.0:
     ember-cli-lodash-subset "^2.0.1"
     ember-cli-preprocess-registry "^3.3.0"
     ember-cli-version-checker "^5.1.2"
-    fastboot "3.2.0"
-    fastboot-express-middleware "3.2.0"
+    fastboot "4.1.0"
+    fastboot-express-middleware "4.1.0"
     fastboot-transform "^0.1.3"
     fs-extra "^10.0.0"
     json-stable-stringify "^1.0.1"
@@ -4817,13 +4817,13 @@ fast-sourcemap-concat@^2.1.0:
     source-map-url "^0.3.0"
     sourcemap-validator "^1.1.0"
 
-fastboot-express-middleware@3.2.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/fastboot-express-middleware/-/fastboot-express-middleware-3.2.0.tgz#86efd6452426efb4f73a0344d37f11b5736de09c"
-  integrity sha512-R6lXqmjJRZ+BWCIJL+amHecVoyi9+usZQkCj1VSM+qRf3wjPfhApv26atD6rJTvKrC3OPdI0E0O0ZtkcyXH+xQ==
+fastboot-express-middleware@4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/fastboot-express-middleware/-/fastboot-express-middleware-4.1.0.tgz#c550eb4fee420d4517ad9b3e951d74f7f997b487"
+  integrity sha512-RH/YnAn8S/CuzVsK0SLH5cVDP50R3MedqPFhf69T3z6h7LSFm12VAU2TKkqtW/N7qDs00CK1Clus2CwuzXVtWA==
   dependencies:
     chalk "^4.1.2"
-    fastboot "3.2.0"
+    fastboot "4.1.0"
 
 fastboot-transform@^0.1.3:
   version "0.1.3"
@@ -4833,10 +4833,10 @@ fastboot-transform@^0.1.3:
     broccoli-stew "^1.5.0"
     convert-source-map "^1.5.1"
 
-fastboot@3.2.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/fastboot/-/fastboot-3.2.0.tgz#1f7e93605c744a32457588d01471a0d2969b346a"
-  integrity sha512-NUy1No6KfGvkrzCRJ7Xy0ooFMEJeEqD2F/ccsjm2kQCEbHeGPWPBadYSSJTUm9xnLDZQzwcJrR+q0uCMarvW+g==
+fastboot@4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/fastboot/-/fastboot-4.1.0.tgz#4c2f62841d80b0a246e38adb3c35b626e2f42087"
+  integrity sha512-NoUUiWhLS4JfrYiHmbRjqqWmzttO+6hVyt+CawsZCg79ljTGAIhPThy8cxg11yiDNiaM9EY3kocWZrCMUM7o4g==
   dependencies:
     chalk "^4.1.2"
     cookie "^0.4.1"
