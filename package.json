@@ -63,7 +63,7 @@
     "mocha": "^10.2.0",
     "mocha-helpers": "^7.0.0",
     "renovate-config-standard": "2.1.2",
-    "rimraf": "^4.0.0",
+    "rimraf": "^5.0.0",
     "standard-node-template": "3.0.0"
   }
 }
