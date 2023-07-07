@@ -19,7 +19,7 @@ install:
 
 # Post-install test scripts.
 test_script:
-  - yarn test
+  - npm test
 
 # http://help.appveyor.com/discussions/questions/1310-delete-cache
 cache:
