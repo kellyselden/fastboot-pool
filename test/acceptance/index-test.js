@@ -336,10 +336,10 @@ function cleanUp() {
 }
 
 describe(function() {
-  this.timeout(60 * 1000);
+  this.timeout(60e3);
 
   before(function() {
-    this.timeout(5 * 60 * 1000);
+    this.timeout(5 * 60e3);
 
     init(false, false);
   });
@@ -390,7 +390,7 @@ describe(function() {
 
       // I can't figure out another way to wait for UnhandledPromiseRejectionWarning.
       // Since it's the very last thing printed, there's nothing after it to test for.
-      setTimeout(done, 1000);
+      setTimeout(done, 1e3);
     });
   }));
 
