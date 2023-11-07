@@ -18,11 +18,6 @@ import _debug from 'debug';
 const isDebugEnabled = _debug.enabled('fastboot-pool');
 const debug = _debug('fastboot-pool');
 
-const {
-  npm_package_devDependencies_ember_cli_fastboot: emberCliFastbootVersion,
-  npm_package_devDependencies_fastboot: fastbootVersion
-} = process.env;
-
 const requestCountUntilFork = 5;
 
 let cwd;
@@ -59,6 +54,8 @@ function initMyApp(earlyReturn, saveModules) {
     debug('my-app: early return');
     return;
   }
+
+  let emberCliFastbootVersion = readJsonSync(process.env.npm_package_json).devDependencies['ember-cli-fastboot'];
 
   if (saveModules) {
     ensureDirSync('tmp/my-app/node_modules');
@@ -108,6 +105,8 @@ function initExpress(earlyReturn, saveModules) {
     debug('express: early return');
     return;
   }
+
+  let fastbootVersion = readJsonSync(process.env.npm_package_json).devDependencies['fastboot'];
 
   if (saveModules) {
     ensureDirSync('tmp/express/node_modules');
